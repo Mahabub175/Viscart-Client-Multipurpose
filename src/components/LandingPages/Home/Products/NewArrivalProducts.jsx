@@ -28,18 +28,23 @@ const NewArrivalProducts = () => {
         <h2 className="text-2xl font-medium mb-2">New Arrivals</h2>
 
         {activeProducts?.length > 0 ? (
-          <div className="relative">
+          <div>
             <Swiper
               onBeforeInit={(swiper) => {
                 swiperRef.current = swiper;
               }}
               modules={[Navigation, Pagination, Scrollbar, A11y]}
-              slidesPerView={6}
+              slidesPerView={3}
               slidesPerGroup={3}
               spaceBetween={10}
               navigation
               scrollbar={{ draggable: true }}
               className="mySwiper relative"
+              breakpoints={{
+                640: { slidesPerView: 3 },
+                768: { slidesPerView: 4 },
+                1024: { slidesPerView: 6 },
+              }}
             >
               {activeProducts?.map((product) => (
                 <SwiperSlide key={product?._id}>
@@ -49,20 +54,20 @@ const NewArrivalProducts = () => {
                       alt={product?.name ?? "Product Image"}
                       width={260}
                       height={200}
-                      className="w-full h-full object-cover"
+                      className="w-full h-fit object-cover"
                     />
                   </LinkButton>
                 </SwiperSlide>
               ))}
-              <div className="flex items-center justify-between gap-5 mt-10">
+              <div className="lg:flex items-center justify-between gap-5 mt-10 hidden">
                 <button
-                  className="z-10 absolute top-[35%] lg:top-[25%] left-0 lg:left-0 bg-white py-10 px-2"
+                  className="z-10 absolute top-[35%] lg:top-[20%] left-0 lg:left-0 bg-white py-8 px-2"
                   onClick={() => swiperRef.current.slidePrev()}
                 >
                   <MdOutlineArrowBackIosNew className="text-4xl" />
                 </button>
                 <button
-                  className="z-10 absolute top-[35%] lg:top-[25%] right-0 lg:right-0 bg-white py-10 px-2"
+                  className="z-10 absolute top-[35%] lg:top-[20%] right-0 lg:right-0 bg-white py-8 px-2"
                   onClick={() => swiperRef.current.slideNext()}
                 >
                   <MdOutlineArrowBackIosNew className="text-4xl rotate-180" />
