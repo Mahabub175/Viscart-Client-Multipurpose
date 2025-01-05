@@ -1,10 +1,9 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import AntDProvider from "@/components/Shared/AntDProvider";
 import { GoogleTagManager } from "@next/third-parties/google";
-
-const interFont = Inter({ subsets: ["latin"], weight: ["400", "500", "700"] });
+import SEOHead from "@/components/Shared/Sidebar/SEOHead";
+import Head from "next/head";
 
 export const metadata = {
   title: "Viscart",
@@ -14,8 +13,15 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
+      <SEOHead />
+      <Head>
+        <link
+          href="https://fonts.cdnfonts.com/css/amazon-ember"
+          rel="stylesheet"
+        />
+      </Head>
       <GoogleTagManager gtmId="GTM-KWXB5SSR" />
-      <body className={interFont.className}>
+      <body className={`font-amazon`}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KWXB5SSR"
