@@ -49,6 +49,18 @@ const AdminAccountSetting = () => {
           categories: values?.sectionTwoCategories,
           multiple: values?.sectionTwoMultiple,
         },
+        sectionThreeCategories: {
+          categories: values?.sectionThreeCategories,
+          multiple: values?.sectionThreeMultiple,
+        },
+        sectionFourCategories: {
+          categories: values?.sectionFourCategories,
+          multiple: values?.sectionFourMultiple,
+        },
+        sectionFiveCategories: {
+          categories: values?.sectionFiveCategories,
+          multiple: values?.sectionFiveMultiple,
+        },
       };
 
       if (typeof values?.primaryColor === "object") {
@@ -116,6 +128,42 @@ const AdminAccountSetting = () => {
           value: data?.results?.sectionTwoCategories?.multiple,
           errors: "",
         },
+        {
+          name: "sectionThreeCategories",
+          value: data?.results?.sectionThreeCategories?.categories?.map(
+            (item) => item?._id
+          ),
+          errors: "",
+        },
+        {
+          name: "sectionThreeMultiple",
+          value: data?.results?.sectionThreeCategories?.multiple,
+          errors: "",
+        },
+        {
+          name: "sectionFourCategories",
+          value: data?.results?.sectionFourCategories?.categories?.map(
+            (item) => item?._id
+          ),
+          errors: "",
+        },
+        {
+          name: "sectionFourMultiple",
+          value: data?.results?.sectionFourCategories?.multiple,
+          errors: "",
+        },
+        {
+          name: "sectionFiveCategories",
+          value: data?.results?.sectionFiveCategories?.categories?.map(
+            (item) => item?._id
+          ),
+          errors: "",
+        },
+        {
+          name: "sectionFiveMultiple",
+          value: data?.results?.sectionFiveCategories?.multiple,
+          errors: "",
+        },
       ])
     );
   }, [data]);
@@ -177,6 +225,54 @@ const AdminAccountSetting = () => {
           />
           <CustomSelect
             name={"sectionTwoMultiple"}
+            label={"Multiple"}
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+          />
+          <CustomSelect
+            label={"Section Three Categories"}
+            name={"sectionThreeCategories"}
+            mode={"multiple"}
+            options={categoryOptions}
+            loading={isCategoryFetching}
+            disabled={isCategoryFetching}
+          />
+          <CustomSelect
+            name={"sectionThreeMultiple"}
+            label={"Multiple"}
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+          />
+          <CustomSelect
+            label={"Section Four Categories"}
+            name={"sectionFourCategories"}
+            mode={"multiple"}
+            options={categoryOptions}
+            loading={isCategoryFetching}
+            disabled={isCategoryFetching}
+          />
+          <CustomSelect
+            name={"sectionFourMultiple"}
+            label={"Multiple"}
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+          />
+          <CustomSelect
+            label={"Section Five Categories"}
+            name={"sectionFiveCategories"}
+            mode={"multiple"}
+            options={categoryOptions}
+            loading={isCategoryFetching}
+            disabled={isCategoryFetching}
+          />
+          <CustomSelect
+            name={"sectionFiveMultiple"}
             label={"Multiple"}
             options={[
               { value: true, label: "True" },

@@ -20,7 +20,7 @@ const Banner = () => {
   );
 
   return (
-    <section className="relative my-container">
+    <section className="relative lg:container mx-auto xl:px-5">
       <Swiper
         onBeforeInit={(swiper) => {
           swiperRef.current = swiper;

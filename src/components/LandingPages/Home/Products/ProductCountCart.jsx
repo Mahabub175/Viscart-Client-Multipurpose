@@ -174,10 +174,10 @@ const ProductCountCart = ({
 
   return (
     <div
-      className={`mt-5 lg:mt-10 ${
+      className={`mt-5 lg:mt-10 border border-primaryLight rounded-xl p-5 ${
         single
-          ? "gap-5 flex flex-col xl:flex-row items-center"
-          : "flex flex-col xl:flex-row items-center justify-between gap-5"
+          ? "gap-5 flex flex-col items-center"
+          : "flex flex-col items-center justify-between gap-5"
       }`}
     >
       {!isOutOfStock ? (

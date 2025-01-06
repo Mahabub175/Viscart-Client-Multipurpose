@@ -173,7 +173,7 @@ const SingleProductDetails = ({ params }) => {
             )}
           </div>
 
-          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[142px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[152px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
             {allMedia?.map((media, index) => (
               <div
                 key={index}
@@ -206,7 +206,7 @@ const SingleProductDetails = ({ params }) => {
             ))}
           </div>
         </div>
-        <div className="lg:w-1/2 flex flex-col text-sm lg:text-base">
+        <div className="flex flex-col text-sm lg:text-base lg:w-1/2">
           <h2 className="text-xl md:text-3xl font-medium mb-2">
             {singleProduct?.name}
           </h2>
@@ -251,13 +251,11 @@ const SingleProductDetails = ({ params }) => {
             handleAttributeSelect={handleAttributeSelect}
             item={singleProduct}
           />
-          <ProductCountCart
-            item={singleProduct}
-            previousSelectedVariant={currentVariant}
-            setPreviousSelectedVariant={setCurrentVariant}
-            fullWidth
-            selectedPreviousAttributes={selectedAttributes}
-          />
+
+          <div
+            dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
+            className="mt-10"
+          ></div>
           <div
             className="w-full bg-primary px-10 py-2 text-xs lg:text-sm rounded-full shadow-xl mt-10 text-center text-white font-bold cursor-pointer"
             onClick={handleWhatsappClick}
@@ -268,10 +266,15 @@ const SingleProductDetails = ({ params }) => {
               <p>{businessWhatsapp}</p>
             </div>
           </div>
-          <div
-            dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
-            className="mt-10"
-          ></div>
+        </div>
+        <div className="lg:sticky top-20 w-full lg:w-4/12">
+          <ProductCountCart
+            item={singleProduct}
+            previousSelectedVariant={currentVariant}
+            setPreviousSelectedVariant={setCurrentVariant}
+            fullWidth
+            selectedPreviousAttributes={selectedAttributes}
+          />
         </div>
       </div>
 
