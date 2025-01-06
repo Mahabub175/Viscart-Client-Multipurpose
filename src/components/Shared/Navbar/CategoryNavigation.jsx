@@ -68,11 +68,11 @@ const CategoryNavigation = () => {
             key={parentCategory?._id}
             onClick={() => openSubCategoryDrawer(parentCategory)}
           >
-            <div className="flex items-center">
+            <div className="flex items-center relative">
               {parentCategory?.name}
               {parentCategory?.categories &&
                 parentCategory?.categories.length > 0 && (
-                  <RightOutlined className="ml-2" />
+                  <RightOutlined className="ml-2 absolute right-0" />
                 )}
             </div>
           </Menu.Item>

@@ -15,7 +15,6 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import ProductCard from "../Home/Products/ProductCard";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
-import SmallFeature from "../Home/SmallFeature";
 
 const SingleProductDetails = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -147,8 +146,8 @@ const SingleProductDetails = ({ params }) => {
 
   return (
     <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
-      <div className="border-2 border-primary rounded-xl p-5 flex flex-col lg:flex-row items-center justify-center gap-10 mb-10 shadow-xl">
-        <div className="relative mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
+      <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10 shadow-xl">
+        <div className="mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5 lg:sticky lg:top-5">
           <div className="relative mx-auto lg:w-[300px] xl:w-full">
             {isVideoPlaying && singleProduct?.video ? (
               <video
@@ -174,7 +173,7 @@ const SingleProductDetails = ({ params }) => {
             )}
           </div>
 
-          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[147px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[142px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
             {allMedia?.map((media, index) => (
               <div
                 key={index}
@@ -269,22 +268,18 @@ const SingleProductDetails = ({ params }) => {
               <p>{businessWhatsapp}</p>
             </div>
           </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
+            className="mt-10"
+          ></div>
         </div>
       </div>
-      <div className="border-2 border-primary rounded-xl p-5 mb-10 shadow-xl bg-white flex flex-col items-center justify-center">
-        <div className="bg-primary mb-10 px-10 py-2 text-white font-bold rounded-xl inline-block">
-          Description
-        </div>
-        <div
-          dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
-        ></div>
-      </div>
-      <SmallFeature />
+
       <div className="mt-20">
         {activeProducts && activeProducts.length > 0 ? (
           <>
             <h2 className="text-xl lg:text-3xl font-bold mb-5 border-b pb-2 px-2">
-              You may also like
+              Products related to this item
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-5 lg:gap-5">
               {activeProducts.map((product) => (
