@@ -5,6 +5,7 @@ import CustomForm from "@/components/Reusable/Form/CustomForm";
 import CustomInput from "@/components/Reusable/Form/CustomInput";
 import CustomSelect from "@/components/Reusable/Form/CustomSelect";
 import FileUploader from "@/components/Reusable/Form/FileUploader";
+import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi";
 import {
   useGetAllGlobalSettingQuery,
   useUpdateGlobalSettingMutation,
@@ -23,11 +24,31 @@ const AdminAccountSetting = () => {
 
   const [updateGlobalSetting, { isLoading }] = useUpdateGlobalSettingMutation();
 
+  const { data: categoryData, isFetching: isCategoryFetching } =
+    useGetAllCategoriesQuery();
+
+  const categoryOptions = categoryData?.results
+    ?.filter(
+      (item) => item?.status !== "Inactive" && item.level === "parentCategory"
+    )
+    .map((item) => ({
+      value: item?._id,
+      label: item?.name + " " + `(${item?.level.toUpperCase()})`,
+    }));
+
   const onSubmit = async (values) => {
     const toastId = toast.loading("Updating Global Setting...");
     try {
       const submittedData = {
         ...values,
+        sectionOneCategories: {
+          categories: values?.sectionOneCategories,
+          multiple: values?.sectionOneMultiple,
+        },
+        sectionTwoCategories: {
+          categories: values?.sectionTwoCategories,
+          multiple: values?.sectionTwoMultiple,
+        },
       };
 
       if (typeof values?.primaryColor === "object") {
@@ -69,7 +90,34 @@ const AdminAccountSetting = () => {
   };
 
   useEffect(() => {
-    setFields(transformDefaultValues(data?.results));
+    setFields(
+      transformDefaultValues(data?.results, [
+        {
+          name: "sectionOneCategories",
+          value: data?.results?.sectionOneCategories?.categories?.map(
+            (item) => item?._id
+          ),
+          errors: "",
+        },
+        {
+          name: "sectionOneMultiple",
+          value: data?.results?.sectionOneCategories?.multiple,
+          errors: "",
+        },
+        {
+          name: "sectionTwoCategories",
+          value: data?.results?.sectionTwoCategories?.categories?.map(
+            (item) => item?._id
+          ),
+          errors: "",
+        },
+        {
+          name: "sectionTwoMultiple",
+          value: data?.results?.sectionTwoCategories?.multiple,
+          errors: "",
+        },
+      ])
+    );
   }, [data]);
 
   const currenciesOptions = currencies.map(({ name, symbol, code }) => {
@@ -101,7 +149,40 @@ const AdminAccountSetting = () => {
           name="favicon"
           required={true}
         />
+
         <div className="two-grid">
+          <CustomSelect
+            label={"Section One Categories"}
+            name={"sectionOneCategories"}
+            mode={"multiple"}
+            options={categoryOptions}
+            loading={isCategoryFetching}
+            disabled={isCategoryFetching}
+          />
+          <CustomSelect
+            name={"sectionOneMultiple"}
+            label={"Multiple"}
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+          />
+          <CustomSelect
+            label={"Section Two Categories"}
+            name={"sectionTwoCategories"}
+            mode={"multiple"}
+            options={categoryOptions}
+            loading={isCategoryFetching}
+            disabled={isCategoryFetching}
+          />
+          <CustomSelect
+            name={"sectionTwoMultiple"}
+            label={"Multiple"}
+            options={[
+              { value: true, label: "True" },
+              { value: false, label: "False" },
+            ]}
+          />
           <CustomInput
             name={"deliveryChargeInsideDhaka"}
             label={"Delivery Charge Inside Dhaka"}

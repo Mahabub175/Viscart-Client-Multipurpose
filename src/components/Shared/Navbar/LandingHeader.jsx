@@ -162,11 +162,11 @@ const LandingHeader = () => {
             <FaSearch className="absolute right-2 top-1/2 -translate-y-1/2 text-primary text-xl" />
           </div>
 
-          <div className="flex gap-6 items-center text-lg">
+          <div className="flex gap-6 items-center">
             {user?._id ? (
               <>
                 {" "}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mr-5">
                   <Popover
                     placement="bottomRight"
                     content={content}
@@ -183,8 +183,10 @@ const LandingHeader = () => {
                     ) : (
                       <Avatar className="" size={40} icon={<UserOutlined />} />
                     )}
-                    <h2 className="font-semibold">{data?.name ?? "User"}</h2>
-                    <IoMdArrowDropdown />
+                    <h2 className="font-normal text-sm text-white flex items-center">
+                      {data?.name ?? "User"}
+                      <IoMdArrowDropdown className="text-white" />
+                    </h2>
                   </Popover>
                 </div>
               </>
