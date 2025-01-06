@@ -164,7 +164,7 @@ const AllProducts = ({ searchParams }) => {
       </div>
 
       <div className="my-container">
-        <div className="bg-gray-200 flex items-center gap-2 justify-between py-3 px-2 lg:px-6 mb-6 rounded-xl">
+        <div className="bg-white flex items-center gap-2 justify-between py-3 px-2 lg:px-6 mb-6 rounded-xl">
           <p className="text-xs md:text-base">
             <span className="font-semibold text-lg">
               {filteredProducts?.length}
@@ -191,7 +191,7 @@ const AllProducts = ({ searchParams }) => {
           </Button>
         </div>
         <div className="flex flex-col lg:flex-row gap-5 items-start">
-          <div className="w-full lg:w-3/12 p-4 border rounded-lg shadow-sm lg:sticky top-5 hidden lg:block">
+          <div className="w-full lg:w-3/12 p-4 border rounded-lg shadow-sm lg:sticky top-5 hidden lg:block bg-white">
             <h2 className="mb-4 text-lg font-semibold">Filter Products</h2>
             <div className="mb-6 border p-5 rounded-xl max-h-[500px] overflow-y-auto">
               <label className="block mb-2 font-semibold">Brands</label>
