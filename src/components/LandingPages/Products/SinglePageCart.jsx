@@ -12,7 +12,7 @@ import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import SingleProductCart from "./SingleProductCart";
 import { toast } from "sonner";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
-import ReactImageMagnify from "react-image-magnify";
+import Magnifier from "react-magnifier";
 
 const SinglePageCart = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -148,9 +148,9 @@ const SinglePageCart = ({ params }) => {
   return (
     <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
       <div className="p-5 mb-10 shadow-xl">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 mb-10">
+        <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10">
           <div className="relative mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
-            <div className="relative mx-auto lg:w-[300px] xl:w-full">
+            <div className="relative mx-auto lg:w-[300px] xl:w-full lg:mr-20 xl:mr-0">
               {isVideoPlaying && singleProduct?.video ? (
                 <video
                   src={formatImagePath(singleProduct?.video)}
@@ -162,25 +162,16 @@ const SinglePageCart = ({ params }) => {
                 </video>
               ) : currentImage ? (
                 <>
-                  <ReactImageMagnify
-                    className="z-10 hidden lg:block"
-                    {...{
-                      smallImage: {
-                        alt: "Magnify Example",
-                        isFluidWidth: true,
-                        src: currentImage,
-                      },
-                      largeImage: {
-                        src: currentImage,
-                        width: 1200,
-                        height: 1200,
-                      },
-                      enlargedImageContainerDimensions: {
-                        width: "120%",
-                        height: "120%",
-                      },
-                    }}
-                  />
+                  <div className="hidden lg:block">
+                    <Magnifier
+                      src={currentImage}
+                      width={400}
+                      height={300}
+                      zoomImgSrc={currentImage}
+                      zoomFactor={2}
+                      zoomSize={200}
+                    />
+                  </div>
                   <div className="lg:hidden">
                     <Zoom>
                       <Image
@@ -231,7 +222,7 @@ const SinglePageCart = ({ params }) => {
               ))}
             </div>
           </div>
-          <div className="lg:w-1/2 flex flex-col gap-3">
+          <div className="lg:w-1/2 flex flex-col gap-3 -mt-10 lg:-mt-0">
             <h2 className="text-xl lg:text-3xl font-medium">
               {singleProduct?.name}
             </h2>
@@ -319,7 +310,7 @@ const SinglePageCart = ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto lg:mt-20">
           <SingleProductCart
             item={currentVariant ?? singleProduct}
             count={count}
