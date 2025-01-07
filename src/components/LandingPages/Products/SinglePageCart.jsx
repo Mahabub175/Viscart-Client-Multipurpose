@@ -12,7 +12,6 @@ import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import SingleProductCart from "./SingleProductCart";
 import { toast } from "sonner";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
-import Magnifier from "react-magnifier";
 
 const SinglePageCart = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -162,7 +161,7 @@ const SinglePageCart = ({ params }) => {
                 </video>
               ) : currentImage ? (
                 <>
-                  <div className="hidden lg:block">
+                  {/* <div className="hidden lg:block">
                     <Magnifier
                       src={currentImage}
                       width={400}
@@ -171,8 +170,8 @@ const SinglePageCart = ({ params }) => {
                       zoomFactor={2}
                       zoomSize={200}
                     />
-                  </div>
-                  <div className="lg:hidden">
+                  </div> */}
+                  <div>
                     <Zoom>
                       <Image
                         src={currentImage}

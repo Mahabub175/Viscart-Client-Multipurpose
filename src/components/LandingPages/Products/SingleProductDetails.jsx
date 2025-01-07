@@ -15,7 +15,6 @@ import "react-medium-image-zoom/dist/styles.css";
 import Zoom from "react-medium-image-zoom";
 import ProductCard from "../Home/Products/ProductCard";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
-import Magnifier from "react-magnifier";
 
 const SingleProductDetails = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -161,7 +160,7 @@ const SingleProductDetails = ({ params }) => {
               </video>
             ) : currentImage ? (
               <>
-                <div className="hidden lg:block">
+                {/* <div className="hidden lg:block">
                   <Magnifier
                     src={currentImage}
                     width={400}
@@ -170,8 +169,8 @@ const SingleProductDetails = ({ params }) => {
                     zoomFactor={2}
                     zoomSize={200}
                   />
-                </div>
-                <div className="lg:hidden">
+                </div> */}
+                <div>
                   <Zoom>
                     <Image
                       src={currentImage}
