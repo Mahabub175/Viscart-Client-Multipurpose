@@ -6,16 +6,17 @@ import Link from "next/link";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import ContactInfo from "./ContactInfo";
+import Image from "next/image";
 
 const LandingFooter = () => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
 
   return (
-    <section className="bg-white border-t mt-10 mb-16 lg:mb-0">
+    <section className="bg-[#232f3e] border-t mt-10 mb-16 lg:mb-0 text-white">
       <footer className="pt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 md:gap-0 xl:gap-10 items-start justify-center my-container">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-0 xl:gap-10 items-start justify-center max-w-7xl mx-auto px-5">
           <div className="flex flex-col items-start gap-4">
-            <h3 className="text-2xl font-bold mb-2">Social</h3>
+            <h3 className="text-xl font-medium mb-2">Social</h3>
             <Link
               href={globalData?.results?.businessFacebook ?? "/"}
               target="_blank"
@@ -52,7 +53,7 @@ const LandingFooter = () => {
 
           {footerData?.map((item, i) => (
             <div key={i}>
-              <h3 className="text-2xl font-bold mb-6">{item?.title}</h3>
+              <h3 className="text-xl font-medium mb-6">{item?.title}</h3>
               <ul>
                 {item?.links?.map((link, j) => (
                   <Link key={j} href={link?.to}>
@@ -68,12 +69,27 @@ const LandingFooter = () => {
           <ContactInfo globalData={globalData} />
         </div>
 
-        <hr className="mt-10" />
-
-        <div className="flex flex-col md:flex-row gap-5 lg:gap-0 justify-between items-center bg-primary py-4">
-          <p className="font-semibold text-white my-container">
-            ©{new Date().getFullYear()}, All rights reserved
-          </p>
+        <div className="flex flex-col md:flex-row gap-5 lg:gap-10 justify-center items-center bg-[#0f1111] mt-10">
+          <Link href={"/"} className="">
+            <Image
+              src={globalData?.results?.logo}
+              alt="logo"
+              width={100}
+              height={100}
+            />
+          </Link>
+          <Link
+            href={"/"}
+            className="hover:underline hover:text-primary duration-300"
+          >
+            Terms & Condition
+          </Link>
+          <Link
+            href={"/"}
+            className="hover:underline hover:text-primary duration-300"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </footer>
     </section>
