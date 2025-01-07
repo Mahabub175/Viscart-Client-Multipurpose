@@ -18,9 +18,9 @@ const OfferProducts = () => {
 
   const { data: productData } = useGetAllProductsQuery();
 
-  const activeProducts = productData?.results
-    ?.filter((item) => item?.status !== "Inactive" && item?.offerPrice > 0)
-    ?.slice(0, 8);
+  const activeProducts = productData?.results?.filter(
+    (item) => item?.status !== "Inactive" && item?.offerPrice > 0
+  );
 
   return (
     <section className="container mx-auto px-2 lg:px-10 mt-10">
