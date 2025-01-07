@@ -4,7 +4,7 @@ import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar"; // Import the Swiper Scrollbar styles
+import "swiper/css/scrollbar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const NewArrivalProducts = () => {
   return (
     <section className="container mx-auto px-2 lg:px-10 mt-10">
       <div className=" bg-white p-5">
-        <h2 className="text-2xl font-medium mb-2">New Arrivals</h2>
+        <h2 className="text-2xl font-semibold mb-2">New Arrivals</h2>
 
         {activeProducts?.length > 0 ? (
           <div>
@@ -46,7 +46,7 @@ const NewArrivalProducts = () => {
                 1024: { slidesPerView: 6 },
               }}
             >
-              {activeProducts?.map((product) => (
+              {activeProducts?.slice(0, 12)?.map((product) => (
                 <SwiperSlide key={product?._id}>
                   <LinkButton href={`/products/${product?.slug}`}>
                     <Image
@@ -61,16 +61,16 @@ const NewArrivalProducts = () => {
               ))}
               <div className="lg:flex items-center justify-between gap-5 mt-10 hidden">
                 <button
-                  className="z-10 absolute top-[35%] lg:top-[20%] left-0 lg:left-0 bg-white py-8 px-2"
+                  className="z-10 absolute top-[35%] lg:top-[20%] left-0 lg:left-0 bg-white/80 shadow py-8 px-2"
                   onClick={() => swiperRef.current.slidePrev()}
                 >
-                  <MdOutlineArrowBackIosNew className="text-4xl" />
+                  <MdOutlineArrowBackIosNew className="text-3xl" />
                 </button>
                 <button
-                  className="z-10 absolute top-[35%] lg:top-[20%] right-0 lg:right-0 bg-white py-8 px-2"
+                  className="z-10 absolute top-[35%] lg:top-[20%] right-0 lg:right-0 bg-white/80 shadow py-8 px-2"
                   onClick={() => swiperRef.current.slideNext()}
                 >
-                  <MdOutlineArrowBackIosNew className="text-4xl rotate-180" />
+                  <MdOutlineArrowBackIosNew className="text-3xl rotate-180" />
                 </button>
               </div>
             </Swiper>

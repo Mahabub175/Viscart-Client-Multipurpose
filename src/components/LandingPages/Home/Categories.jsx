@@ -17,175 +17,185 @@ const Categories = () => {
   );
 
   return (
-    <section className="container mx-auto px-2 lg:px-10 -mt-[12%] z-10 relative grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      {globalData?.results?.sectionOneCategories?.categories?.length > 0 &&
-        globalData?.results?.sectionOneCategories?.categories?.map(
-          (globalItem, index) => {
-            const matchingCategories = activeCategories?.filter(
-              (item) =>
-                item?.parentCategory?.name?.toLowerCase() ===
-                globalItem?.name?.toLowerCase()
-            );
+    <>
+      {globalData?.results?.sectionOneCategories?.categories?.length > 0 && (
+        <section className="container mx-auto px-2 lg:px-10 -mt-[12%] z-10 relative grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {globalData?.results?.sectionOneCategories?.categories?.map(
+            (globalItem, index) => {
+              const matchingCategories = activeCategories?.filter(
+                (item) =>
+                  item?.parentCategory?.name?.toLowerCase() ===
+                  globalItem?.name?.toLowerCase()
+              );
 
-            const showSingleImage =
-              !globalData?.results?.sectionOneCategories?.multiple &&
-              index === 2;
+              const showSingleImage =
+                !globalData?.results?.sectionOneCategories?.multiple &&
+                index === 2;
 
-            return (
-              <div className="bg-white p-5" key={globalItem?._id}>
-                {showSingleImage ? (
-                  <div className="relative">
-                    <h2 className="text-md font-medium mb-2">
-                      Top categories in {globalItem?.name}
-                    </h2>
-                    <div className="group" key={globalItem?._id}>
-                      <LinkButton href={`/products?filter=${globalItem?.name}`}>
-                        <div className="overflow-hidden w-full h-full mx-auto">
-                          <Image
-                            src={
-                              formatImagePath(globalItem?.attachment) ??
-                              "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
-                            }
-                            alt={globalItem?.name ?? "demo"}
-                            width={700}
-                            height={500}
-                            className="w-full lg:h-[380px] mx-auto object-fill group-hover:scale-110 duration-500"
-                          />
-                        </div>
-                      </LinkButton>
+              return (
+                <div className="bg-white p-5" key={globalItem?._id}>
+                  {showSingleImage ? (
+                    <div className="relative">
+                      <h2 className="text-md font-medium mb-2">
+                        Top categories in {globalItem?.name}
+                      </h2>
+                      <div className="group" key={globalItem?._id}>
+                        <LinkButton
+                          href={`/products?filter=${globalItem?.name}`}
+                        >
+                          <div className="overflow-hidden w-full h-full mx-auto">
+                            <Image
+                              src={
+                                formatImagePath(globalItem?.attachment) ??
+                                "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
+                              }
+                              alt={globalItem?.name ?? "demo"}
+                              width={700}
+                              height={500}
+                              className="w-full lg:h-[380px] mx-auto object-fill group-hover:scale-110 duration-500"
+                            />
+                          </div>
+                        </LinkButton>
+                      </div>
+                      <Link href={`/products?filter=${globalItem?.name}`}>
+                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                          Explore all products in {globalItem?.name}
+                        </span>
+                      </Link>
                     </div>
-                    <Link href={`/products?filter=${globalItem?.name}`}>
-                      <span className="lg:text-start text-blue-500 font-medium text-xs">
-                        Explore all products in {globalItem?.name}
-                      </span>
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    <h2 className="text-md font-medium mb-2">
-                      Top categories in {globalItem?.name}
-                    </h2>
-                    <div className="grid grid-cols-2 gap-5 mb-5">
-                      {matchingCategories?.slice(0, 4)?.map((category) => (
-                        <div className="group" key={category?._id}>
-                          <LinkButton
-                            href={`/products?filter=${category?.name}`}
-                          >
-                            <div className="overflow-hidden w-full h-full mx-auto">
-                              <Image
-                                src={
-                                  category?.attachment ??
-                                  "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
-                                }
-                                alt={category?.name ?? "demo"}
-                                width={160}
-                                height={160}
-                                className="mx-auto object-fill group-hover:scale-110 duration-500"
-                              />
-                            </div>
-                            <h2 className="mt-2 text-sm font-medium lg:text-start">
-                              {category?.name}
-                            </h2>
-                          </LinkButton>
-                        </div>
-                      ))}
-                    </div>
-                    <Link href={`/products?filter=${globalItem?.name}`}>
-                      <span className="lg:text-start text-blue-500 font-medium text-xs">
-                        Explore all products in {globalItem?.name}
-                      </span>
-                    </Link>
-                  </>
-                )}
-              </div>
-            );
-          }
-        )}
+                  ) : (
+                    <>
+                      <h2 className="text-md font-medium mb-2">
+                        Top categories in {globalItem?.name}
+                      </h2>
+                      <div className="grid grid-cols-2 gap-5 mb-5">
+                        {matchingCategories?.slice(0, 4)?.map((category) => (
+                          <div className="group" key={category?._id}>
+                            <LinkButton
+                              href={`/products?filter=${category?.name}`}
+                            >
+                              <div className="overflow-hidden w-full h-full mx-auto">
+                                <Image
+                                  src={
+                                    category?.attachment ??
+                                    "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
+                                  }
+                                  alt={category?.name ?? "demo"}
+                                  width={160}
+                                  height={160}
+                                  className="mx-auto object-fill group-hover:scale-110 duration-500"
+                                />
+                              </div>
+                              <h2 className="mt-2 text-sm font-medium lg:text-start">
+                                {category?.name}
+                              </h2>
+                            </LinkButton>
+                          </div>
+                        ))}
+                      </div>
+                      <Link href={`/products?filter=${globalItem?.name}`}>
+                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                          Explore all products in {globalItem?.name}
+                        </span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              );
+            }
+          )}
+        </section>
+      )}
 
-      {globalData?.results?.sectionTwoCategories?.categories?.length > 0 &&
-        globalData?.results?.sectionTwoCategories?.categories?.map(
-          (globalItem, index) => {
-            const matchingCategories = activeCategories?.filter(
-              (item) =>
-                item?.parentCategory?.name?.toLowerCase() ===
-                globalItem?.name?.toLowerCase()
-            );
+      {globalData?.results?.sectionTwoCategories?.categories?.length > 0 && (
+        <section className="container mx-auto px-2 lg:px-10 mt-5 z-10 relative grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {globalData?.results?.sectionTwoCategories?.categories?.map(
+            (globalItem, index) => {
+              const matchingCategories = activeCategories?.filter(
+                (item) =>
+                  item?.parentCategory?.name?.toLowerCase() ===
+                  globalItem?.name?.toLowerCase()
+              );
 
-            const showSingleImage =
-              !globalData?.results?.sectionTwoCategories?.multiple &&
-              index === 3;
+              const showSingleImage =
+                !globalData?.results?.sectionTwoCategories?.multiple &&
+                index === 3;
 
-            return (
-              <div className="bg-white p-5" key={globalItem?._id}>
-                {showSingleImage ? (
-                  <div className="relative">
-                    <h2 className="text-md font-medium mb-2">
-                      Top categories in {globalItem?.name}
-                    </h2>
-                    <div className="group" key={globalItem?._id}>
-                      <LinkButton href={`/products?filter=${globalItem?.name}`}>
-                        <div className="overflow-hidden w-full h-full mx-auto">
-                          <Image
-                            src={
-                              formatImagePath(globalItem?.attachment) ??
-                              "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
-                            }
-                            alt={globalItem?.name ?? "demo"}
-                            width={700}
-                            height={500}
-                            className="w-full lg:h-[380px] mx-auto object-fill group-hover:scale-110 duration-500"
-                          />
-                        </div>
-                      </LinkButton>
+              return (
+                <div className="bg-white p-5" key={globalItem?._id}>
+                  {showSingleImage ? (
+                    <div className="relative">
+                      <h2 className="text-md font-medium mb-2">
+                        Top categories in {globalItem?.name}
+                      </h2>
+                      <div className="group" key={globalItem?._id}>
+                        <LinkButton
+                          href={`/products?filter=${globalItem?.name}`}
+                        >
+                          <div className="overflow-hidden w-full h-full mx-auto">
+                            <Image
+                              src={
+                                formatImagePath(globalItem?.attachment) ??
+                                "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
+                              }
+                              alt={globalItem?.name ?? "demo"}
+                              width={700}
+                              height={500}
+                              className="w-full lg:h-[380px] mx-auto object-fill group-hover:scale-110 duration-500"
+                            />
+                          </div>
+                        </LinkButton>
+                      </div>
+                      <Link href={`/products?filter=${globalItem?.name}`}>
+                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                          Explore all products in {globalItem?.name}
+                        </span>
+                      </Link>
                     </div>
-                    <Link href={`/products?filter=${globalItem?.name}`}>
-                      <span className="lg:text-start text-blue-500 font-medium text-xs">
-                        Explore all products in {globalItem?.name}
-                      </span>
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    <h2 className="text-md font-medium mb-2">
-                      Top categories in {globalItem?.name}
-                    </h2>
-                    <div className="grid grid-cols-2 gap-5 mb-5">
-                      {matchingCategories?.slice(0, 4)?.map((category) => (
-                        <div className="group" key={category?._id}>
-                          <LinkButton
-                            href={`/products?filter=${category?.name}`}
-                          >
-                            <div className="overflow-hidden w-full h-full mx-auto">
-                              <Image
-                                src={
-                                  category?.attachment ??
-                                  "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
-                                }
-                                alt={category?.name ?? "demo"}
-                                width={160}
-                                height={160}
-                                className="mx-auto object-fill group-hover:scale-110 duration-500"
-                              />
-                            </div>
-                            <h2 className="mt-2 text-sm font-medium lg:text-start">
-                              {category?.name}
-                            </h2>
-                          </LinkButton>
-                        </div>
-                      ))}
-                    </div>
-                    <Link href={`/products?filter=${globalItem?.name}`}>
-                      <span className="lg:text-start text-blue-500 font-medium text-xs">
-                        Explore all products in {globalItem?.name}
-                      </span>
-                    </Link>
-                  </>
-                )}
-              </div>
-            );
-          }
-        )}
-    </section>
+                  ) : (
+                    <>
+                      <h2 className="text-md font-medium mb-2">
+                        Top categories in {globalItem?.name}
+                      </h2>
+                      <div className="grid grid-cols-2 gap-5 mb-5">
+                        {matchingCategories?.slice(0, 4)?.map((category) => (
+                          <div className="group" key={category?._id}>
+                            <LinkButton
+                              href={`/products?filter=${category?.name}`}
+                            >
+                              <div className="overflow-hidden w-full h-full mx-auto">
+                                <Image
+                                  src={
+                                    category?.attachment ??
+                                    "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
+                                  }
+                                  alt={category?.name ?? "demo"}
+                                  width={160}
+                                  height={160}
+                                  className="mx-auto object-fill group-hover:scale-110 duration-500"
+                                />
+                              </div>
+                              <h2 className="mt-2 text-sm font-medium lg:text-start">
+                                {category?.name}
+                              </h2>
+                            </LinkButton>
+                          </div>
+                        ))}
+                      </div>
+                      <Link href={`/products?filter=${globalItem?.name}`}>
+                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                          Explore all products in {globalItem?.name}
+                        </span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              );
+            }
+          )}
+        </section>
+      )}
+    </>
   );
 };
 

@@ -63,7 +63,7 @@ const ProductCard = ({ item }) => {
       <div className="text-start">
         <LinkButton href={`/products/${item?.slug}`}>
           <Tooltip placement="top" title={item?.name}>
-            <h2 className="text-sm text-start md:text-base lg:mt-3 hover:text-gray-500 duration-300 mb-4">
+            <h2 className="text-xs text-start md:text-base lg:mt-3 hover:text-gray-500 duration-300 mb-4">
               {item?.name.length > 30
                 ? item.name.slice(0, 30).concat("...")
                 : item.name}
@@ -95,7 +95,7 @@ const ProductCard = ({ item }) => {
         </div>
         <div className="absolute bottom-6 left-0 right-0">
           <button
-            className="bg-primary text-white px-4 py-1.5 mt-4 rounded hover:scale-105 duration-300"
+            className="bg-primary text-white px-4 py-1.5 mt-4 rounded-full hover:scale-105 duration-300"
             onClick={() => setIsModalVisible(true)}
           >
             Add To Cart
