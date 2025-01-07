@@ -11,10 +11,11 @@ import { Rate } from "antd";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaPlay, FaWhatsapp } from "react-icons/fa";
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import Zoom from "react-medium-image-zoom";
 import ProductCard from "../Home/Products/ProductCard";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
+import ReactImageMagnify from "react-image-magnify";
 
 const SingleProductDetails = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -147,7 +148,7 @@ const SingleProductDetails = ({ params }) => {
   return (
     <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
       <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10 shadow-xl">
-        <div className="mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5 lg:sticky lg:top-5">
+        <div className="mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
           <div className="relative mx-auto lg:w-[300px] xl:w-full">
             {isVideoPlaying && singleProduct?.video ? (
               <video
@@ -159,21 +160,44 @@ const SingleProductDetails = ({ params }) => {
                 Your browser does not support the video tag.
               </video>
             ) : currentImage ? (
-              <Zoom>
-                <Image
-                  src={currentImage}
-                  alt="product image"
-                  height={450}
-                  width={450}
-                  className="mx-auto rounded-xl"
+              <>
+                <ReactImageMagnify
+                  className="z-10 hidden lg:block"
+                  {...{
+                    smallImage: {
+                      alt: "Magnify Example",
+                      isFluidWidth: true,
+                      src: currentImage,
+                    },
+                    largeImage: {
+                      src: currentImage,
+                      width: 1600,
+                      height: 1200,
+                    },
+                    enlargedImageContainerDimensions: {
+                      width: "200%",
+                      height: "200%",
+                    },
+                  }}
                 />
-              </Zoom>
+                <div className="lg:hidden">
+                  <Zoom>
+                    <Image
+                      src={currentImage}
+                      alt="product image"
+                      height={450}
+                      width={450}
+                      className="mx-auto rounded-xl"
+                    />
+                  </Zoom>
+                </div>
+              </>
             ) : (
               <p>No image available</p>
             )}
           </div>
 
-          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[152px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[143px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
             {allMedia?.map((media, index) => (
               <div
                 key={index}
@@ -206,7 +230,7 @@ const SingleProductDetails = ({ params }) => {
             ))}
           </div>
         </div>
-        <div className="flex flex-col text-sm lg:text-base lg:w-1/2">
+        <div className="flex flex-col text-sm lg:text-base lg:w-1/2 -mt-8 lg:-mt-0">
           <h2 className="text-xl md:text-3xl font-medium mb-2">
             {singleProduct?.name}
           </h2>
@@ -267,7 +291,7 @@ const SingleProductDetails = ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="lg:sticky top-20 w-full lg:w-4/12">
+        <div className="w-full lg:w-4/12">
           <ProductCountCart
             item={singleProduct}
             previousSelectedVariant={currentVariant}

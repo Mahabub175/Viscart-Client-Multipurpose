@@ -12,6 +12,7 @@ import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import SingleProductCart from "./SingleProductCart";
 import { toast } from "sonner";
 import AttributeOptionSelector from "@/components/Shared/Product/AttributeOptionSelector";
+import ReactImageMagnify from "react-image-magnify";
 
 const SinglePageCart = ({ params }) => {
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -145,8 +146,8 @@ const SinglePageCart = ({ params }) => {
 
   const isOutOfStock = singleProduct?.stock <= 0 || currentVariant?.stock <= 0;
   return (
-    <section className="my-container py-10 -mt-5 lg:-mt-0">
-      <div className="border-2 border-primary rounded-xl p-5 mb-10 shadow-xl">
+    <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
+      <div className="p-5 mb-10 shadow-xl">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10 mb-10">
           <div className="relative mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
             <div className="relative mx-auto lg:w-[300px] xl:w-full">
@@ -160,21 +161,44 @@ const SinglePageCart = ({ params }) => {
                   Your browser does not support the video tag.
                 </video>
               ) : currentImage ? (
-                <Zoom>
-                  <Image
-                    src={currentImage}
-                    alt="product image"
-                    height={400}
-                    width={400}
-                    className="mx-auto rounded-xl"
+                <>
+                  <ReactImageMagnify
+                    className="z-10 hidden lg:block"
+                    {...{
+                      smallImage: {
+                        alt: "Magnify Example",
+                        isFluidWidth: true,
+                        src: currentImage,
+                      },
+                      largeImage: {
+                        src: currentImage,
+                        width: 1200,
+                        height: 1200,
+                      },
+                      enlargedImageContainerDimensions: {
+                        width: "120%",
+                        height: "120%",
+                      },
+                    }}
                   />
-                </Zoom>
+                  <div className="lg:hidden">
+                    <Zoom>
+                      <Image
+                        src={currentImage}
+                        alt="product image"
+                        height={450}
+                        width={450}
+                        className="mx-auto rounded-xl"
+                      />
+                    </Zoom>
+                  </div>
+                </>
               ) : (
                 <p>No image available</p>
               )}
             </div>
 
-            <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[149px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+            <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[138px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
               {allMedia?.map((media, index) => (
                 <div
                   key={index}

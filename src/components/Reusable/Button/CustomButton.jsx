@@ -9,7 +9,7 @@ export const SubmitButton = ({ loading, text, func, icon, fullWidth }) => {
       loading={loading}
       icon={icon}
       onClick={func}
-      className={`bg-primary hover:bg-secondary font-bold px-10 ${
+      className={`bg-primary hover:bg-secondary font-bold px-10 z-0 ${
         fullWidth && "w-full"
       }`}
     >
