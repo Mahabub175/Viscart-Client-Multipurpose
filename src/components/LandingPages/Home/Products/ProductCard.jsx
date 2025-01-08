@@ -25,33 +25,34 @@ const ProductCard = ({ item }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative overflow-hidden">
-        {item?.video && isHovered ? (
-          <video
-            src={formatImagePath(item?.video)}
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            autoPlay
-            muted
-            controls={false}
-            className="w-full h-[160px] lg:h-[200px] object-cover"
-          >
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <Image
-            src={
-              pathname === "/products"
-                ? item?.mainImage
-                : formatImagePath(item?.mainImage)
-            }
-            alt={item?.name}
-            width={200}
-            height={260}
-            className="h-[180px] lg:h-[200px] group-hover:scale-110 duration-500"
-          />
-        )}
-
+        <LinkButton href={`/products/${item?.slug}`}>
+          {item?.video && isHovered ? (
+            <video
+              src={formatImagePath(item?.video)}
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              autoPlay
+              muted
+              controls={false}
+              className="w-full h-[160px] lg:h-[200px] object-cover"
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <Image
+              src={
+                pathname === "/products"
+                  ? item?.mainImage
+                  : formatImagePath(item?.mainImage)
+              }
+              alt={item?.name}
+              width={200}
+              height={260}
+              className="h-[180px] lg:h-[200px] group-hover:scale-110 duration-500"
+            />
+          )}
+        </LinkButton>
         <div className="hidden lg:block absolute inset-x-0 bottom-0 transform translate-y-full group-hover:translate-y-0 duration-500 z-10">
           <QuickViewHover item={item} />
         </div>
