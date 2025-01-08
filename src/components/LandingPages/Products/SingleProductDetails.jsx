@@ -146,7 +146,7 @@ const SingleProductDetails = ({ params }) => {
 
   return (
     <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
-      <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10 shadow-xl">
+      <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10">
         <div className="mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
           <div className="relative mx-auto lg:w-[300px] xl:w-full">
             {isVideoPlaying && singleProduct?.video ? (
@@ -259,16 +259,18 @@ const SingleProductDetails = ({ params }) => {
               </p>
             )}
           </div>
+          <hr />
           <AttributeOptionSelector
             groupedAttributes={groupedAttributes}
             selectedAttributes={selectedAttributes}
             handleAttributeSelect={handleAttributeSelect}
             item={singleProduct}
           />
+          <hr />
 
           <div
             dangerouslySetInnerHTML={{ __html: singleProduct?.description }}
-            className="mt-10"
+            className="mt-5"
           ></div>
           <div
             className="w-full bg-primary px-10 py-2 text-xs lg:text-sm rounded-full shadow-xl mt-10 text-center text-white font-bold cursor-pointer"
@@ -281,13 +283,42 @@ const SingleProductDetails = ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="w-full lg:w-4/12">
+        <div className="w-full lg:w-4/12 mt-5 border border-gray-300 rounded-xl p-5">
+          <div className="flex items-center gap-4 text-textColor font-medium my-2">
+            Price:{" "}
+            {singleProduct?.offerPrice ? (
+              <p className="text-primary text-xl">
+                {globalData?.results?.currency +
+                  " " +
+                  singleProduct?.offerPrice}
+              </p>
+            ) : (
+              <p className="text-primary text-xl">
+                {globalData?.results?.currency + " " + currentPrice}
+              </p>
+            )}
+            {singleProduct?.offerPrice && (
+              <p className="text-base line-through text-red-500">
+                {globalData?.results?.currency +
+                  " " +
+                  singleProduct?.sellingPrice}
+              </p>
+            )}
+          </div>
+          <div className="my-5">
+            {!singleProduct?.stock > 0 ? (
+              <div className="text-lg text-red-500">(Out Of Stock)</div>
+            ) : (
+              <div className="text-lg text-green-500">(In Stock)</div>
+            )}
+          </div>
           <ProductCountCart
             item={singleProduct}
             previousSelectedVariant={currentVariant}
             setPreviousSelectedVariant={setCurrentVariant}
             fullWidth
             selectedPreviousAttributes={selectedAttributes}
+            currentPrice={currentPrice}
           />
         </div>
       </div>
@@ -298,7 +329,7 @@ const SingleProductDetails = ({ params }) => {
             <h2 className="text-xl lg:text-3xl font-bold mb-5 border-b pb-2 px-2">
               Products related to this item
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-5 lg:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-2 gap-y-5 lg:gap-5">
               {activeProducts.map((product) => (
                 <ProductCard key={product._id} item={product} />
               ))}

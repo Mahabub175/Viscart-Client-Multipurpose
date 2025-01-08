@@ -20,7 +20,7 @@ const ProductCard = ({ item }) => {
 
   return (
     <div
-      className="relative group lg:w-[220px] mx-auto h-[400px] flex flex-col p-2"
+      className="relative group lg:w-[220px] mx-auto h-[400px] flex flex-col p-2 border border-grey rounded-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -93,7 +93,7 @@ const ProductCard = ({ item }) => {
             <div className="text-xs text-green-500">(In Stock)</div>
           )}
         </div>
-        <div className="absolute bottom-6 left-0 right-0">
+        <div className="absolute bottom-6 left-1 right-0">
           <button
             className="bg-primary text-white px-4 py-1.5 mt-4 rounded-full hover:scale-105 duration-300"
             onClick={() => setIsModalVisible(true)}

@@ -174,7 +174,7 @@ const ProductCountCart = ({
 
   return (
     <div
-      className={`mt-5 lg:mt-10 border border-primaryLight rounded-xl p-5 ${
+      className={` ${
         single
           ? "gap-5 flex flex-col items-center"
           : "flex flex-col items-center justify-between gap-5"
@@ -182,7 +182,7 @@ const ProductCountCart = ({
     >
       {!isOutOfStock ? (
         <>
-          <div className="flex items-center gap-3 border border-primaryLight rounded-xl p-1.5">
+          <div className="flex items-center gap-3 border border-primaryLight rounded-xl p-1.5 w-full justify-center">
             <button
               className="cursor-pointer bg-primaryLight p-2 rounded text-xl"
               onClick={() => handleCount("decrement")}

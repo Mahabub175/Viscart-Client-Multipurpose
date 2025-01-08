@@ -2,9 +2,9 @@ import SingleProductDetails from "@/components/LandingPages/Products/SingleProdu
 
 const page = ({ params }) => {
   return (
-    <>
+    <div className="bg-white">
       <SingleProductDetails params={params} />
-    </>
+    </div>
   );
 };
 
