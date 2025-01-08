@@ -207,11 +207,13 @@ const LandingHeader = () => {
               className="hidden lg:flex text-white text-sm cursor-pointer"
             >
               {compareData?.[0]?.product?.length > 0 ? (
-                <span className="relative flex items-center gap-2 hover:text-primary duration-300">
-                  <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                    {compareData?.[0]?.product?.length}
+                <span className="flex items-center gap-2 hover:text-primary duration-300">
+                  <span className="relative">
+                    <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                      {compareData?.[0]?.product?.length}
+                    </span>
+                    <FaCodeCompare className="rotate-90" />
                   </span>
-                  <FaCodeCompare className="rotate-90" />
                   <span>Compare</span>
                 </span>
               ) : (
@@ -226,11 +228,13 @@ const LandingHeader = () => {
               className="hidden lg:flex text-sm text-white cursor-pointer"
             >
               {wishListData?.length > 0 ? (
-                <span className="relative flex items-center gap-2 hover:text-primary duration-300">
-                  <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                    {wishListData?.length}
+                <span className="flex items-center gap-2 hover:text-primary duration-300">
+                  <span className="relative">
+                    <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                      {wishListData?.length}
+                    </span>
+                    <FaHeart />
                   </span>
-                  <FaHeart />
                   Wishlist
                 </span>
               ) : (
@@ -245,11 +249,13 @@ const LandingHeader = () => {
               onClick={() => setIsCartOpen(true)}
             >
               {cartData?.length > 0 ? (
-                <span className="relative flex items-center gap-2 hover:text-primary duration-300">
-                  <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                    {cartData?.length}
+                <span className="flex items-center gap-2 hover:text-primary duration-300">
+                  <span className="relative">
+                    <span className="absolute -top-2 -right-2 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                      {cartData?.length}
+                    </span>
+                    <FaShoppingBag />
                   </span>
-                  <FaShoppingBag />
                   Cart
                 </span>
               ) : (
