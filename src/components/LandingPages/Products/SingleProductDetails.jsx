@@ -329,7 +329,7 @@ const SingleProductDetails = ({ params }) => {
             <h2 className="text-xl lg:text-3xl font-bold mb-5 border-b pb-2 px-2">
               Products related to this item
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-2 gap-y-5 lg:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-2 gap-y-5 lg:gap-5">
               {activeProducts.map((product) => (
                 <ProductCard key={product._id} item={product} />
               ))}
