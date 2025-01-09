@@ -182,16 +182,16 @@ const ProductCountCart = ({
     >
       {!isOutOfStock ? (
         <>
-          <div className="flex items-center gap-3 border border-primaryLight rounded-xl p-1.5 w-full justify-center">
+          <div className="flex items-center gap-3 border border-grey rounded-xl p-1.5 w-full justify-center mt-5">
             <button
-              className="cursor-pointer bg-primaryLight p-2 rounded text-xl"
+              className="cursor-pointer bg-grey p-2 rounded text-xl"
               onClick={() => handleCount("decrement")}
             >
               <FaMinus />
             </button>
             <span className="text-base font-bold text-textColor">{count}</span>
             <button
-              className="cursor-pointer bg-primaryLight p-2 rounded text-xl"
+              className="cursor-pointer bg-grey p-2 rounded text-xl"
               onClick={() => handleCount("increment")}
             >
               <FaPlus />

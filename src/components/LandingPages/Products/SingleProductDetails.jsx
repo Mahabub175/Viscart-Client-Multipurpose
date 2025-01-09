@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import ProductCountCart from "@/components/LandingPages/Home/Products/ProductCountCart";
@@ -9,7 +10,7 @@ import {
 import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import { Rate } from "antd";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaPlay, FaWhatsapp } from "react-icons/fa";
 import "react-medium-image-zoom/dist/styles.css";
 import Zoom from "react-medium-image-zoom";
@@ -144,8 +145,42 @@ const SingleProductDetails = ({ params }) => {
     }
   };
 
+  const [isMagnifying, setIsMagnifying] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = () => {
+    setIsMagnifying(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMagnifying(false);
+  };
+  const throttle = (func, delay) => {
+    let lastCall = 0;
+    return (...args) => {
+      const now = new Date().getTime();
+      if (now - lastCall >= delay) {
+        lastCall = now;
+        return func(...args);
+      }
+    };
+  };
+
+  const handleMouseMove = useCallback(
+    throttle((e) => {
+      const { left, top } = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - left;
+      const y = e.clientY - top;
+      setMousePosition({ x, y });
+    }, 50),
+    []
+  );
+
+  const magnifierSize = 100;
+  const zoomLevel = 2;
+
   return (
-    <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
+    <section className="container mx-auto px-2 lg:px-5 py-10">
       <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10">
         <div className="mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
           <div className="relative mx-auto lg:w-[300px] xl:w-full">
@@ -160,17 +195,52 @@ const SingleProductDetails = ({ params }) => {
               </video>
             ) : currentImage ? (
               <>
-                {/* <div className="hidden lg:block">
-                  <Magnifier
-                    src={currentImage}
-                    width={400}
-                    height={300}
-                    zoomImgSrc={currentImage}
-                    zoomFactor={2}
-                    zoomSize={200}
-                  />
-                </div> */}
-                <div>
+                <div className="hidden lg:block">
+                  <div className="relative">
+                    <Image
+                      src={currentImage}
+                      alt={singleProduct?.name}
+                      width={450}
+                      height={450}
+                      className="object-cover"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      onMouseMove={handleMouseMove}
+                    />
+                  </div>
+
+                  {isMagnifying && (
+                    <div
+                      className="absolute top-0 left-0"
+                      style={{
+                        width: `${magnifierSize}px`,
+                        height: `${magnifierSize}px`,
+                        left: `${mousePosition.x - magnifierSize / 2}px`,
+                        top: `${mousePosition.y - magnifierSize / 2}px`,
+
+                        pointerEvents: "none",
+                        zIndex: 10,
+                      }}
+                    >
+                      <div
+                        className="absolute w-full h-full"
+                        style={{
+                          backgroundImage: `url(${currentImage})`,
+                          backgroundSize: `${zoomLevel * 100}%`,
+                          backgroundPosition: `-${
+                            mousePosition.x * zoomLevel - magnifierSize / 2
+                          }px -${
+                            mousePosition.y * zoomLevel - magnifierSize / 2
+                          }px`,
+                          width: `${zoomLevel * 200}%`,
+                          height: `${zoomLevel * 200}%`,
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="lg:hidden">
                   <Zoom>
                     <Image
                       src={currentImage}
@@ -187,7 +257,7 @@ const SingleProductDetails = ({ params }) => {
             )}
           </div>
 
-          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[143px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+          <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[152px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
             {allMedia?.map((media, index) => (
               <div
                 key={index}
