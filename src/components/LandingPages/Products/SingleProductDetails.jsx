@@ -211,13 +211,12 @@ const SingleProductDetails = ({ params }) => {
 
                   {isMagnifying && (
                     <div
-                      className="absolute top-0 left-0"
+                      className="absolute top-0"
                       style={{
                         width: `${magnifierSize}px`,
                         height: `${magnifierSize}px`,
-                        left: `${mousePosition.x - magnifierSize / 2}px`,
-                        top: `${mousePosition.y - magnifierSize / 2}px`,
-
+                        left: `${350 + 20}px`,
+                        top: `${2}px`,
                         pointerEvents: "none",
                         zIndex: 10,
                       }}
