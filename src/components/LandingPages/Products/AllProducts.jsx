@@ -54,7 +54,8 @@ const AllProducts = ({ searchParams }) => {
   );
 
   const activeProducts = useMemo(
-    () => productData?.results?.filter((item) => item?.status !== "Inactive"),
+    () =>
+      productData?.results?.filter((item) => item?.status !== "Inactive") || [],
     [productData]
   );
 
@@ -97,6 +98,7 @@ const AllProducts = ({ searchParams }) => {
       setLoading(true);
 
       const filtered = activeProducts?.filter((product) => {
+        if (!product) return false;
         const isBrandMatch = selectedBrands.length
           ? selectedBrands.includes(product?.brand?.name)
           : true;
