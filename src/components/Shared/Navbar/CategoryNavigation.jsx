@@ -12,85 +12,79 @@ import Link from "next/link";
 
 const CategoryNavigation = () => {
   const { data: categories } = useGetAllCategoriesQuery();
+  const [drawerStack, setDrawerStack] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [currentTitle, setCurrentTitle] = useState("");
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [subCategoryDrawerVisible, setSubCategoryDrawerVisible] =
-    useState(false);
-  const [currentCategory, setCurrentCategory] = useState(null);
 
-  const openDrawer = () => setDrawerVisible(true);
+  const openDrawer = () => {
+    setDrawerVisible(true);
+    const parentCategories = categories?.results?.filter(
+      (item) => item?.level === "parentCategory"
+    );
+    setCurrentItems(parentCategories || []);
+    setCurrentTitle("Categories");
+    setDrawerStack([]);
+  };
 
   const closeDrawer = () => {
     setDrawerVisible(false);
-    setSubCategoryDrawerVisible(false);
-    setCurrentCategory(null);
+    setCurrentItems([]);
+    setCurrentTitle("");
+    setDrawerStack([]);
   };
 
-  const openSubCategoryDrawer = (category) => {
-    if (category?.categories?.length > 0) {
-      setCurrentCategory(category);
-      setSubCategoryDrawerVisible(true);
+  const navigateTo = (items, currentCategory) => {
+    setDrawerStack((prevStack) => [
+      ...prevStack,
+      { title: currentTitle, items: currentItems },
+    ]);
+    setCurrentItems(items);
+    setCurrentTitle(currentCategory?.name || "Categories");
+  };
+
+  const goBack = () => {
+    const previousState = drawerStack.pop();
+    if (previousState) {
+      setCurrentItems(previousState.items);
+      setCurrentTitle(previousState.title);
+      setDrawerStack([...drawerStack]);
     }
   };
 
-  const backToParentDrawer = () => {
-    setSubCategoryDrawerVisible(false);
-    setCurrentCategory(null);
-  };
+  const renderMenuItems = (items, level) => {
+    return items.map((item) => {
+      const hasCategories = item?.categories?.length > 0;
+      const hasSubcategories = item?.subcategories?.length > 0;
 
-  const renderSubcategories = (category) => {
-    if (category?.categories?.length > 0) {
       return (
-        <Menu>
-          {category.categories.map((subCategory) => (
-            <Menu.Item key={subCategory?._id}>
-              <Link href={`/products?filter=${subCategory?.name}`}>
-                {subCategory?.name}
-                {subCategory?.categories &&
-                  subCategory?.categories.length > 0 && (
-                    <RightOutlined className="ml-2" />
-                  )}
-              </Link>
-            </Menu.Item>
-          ))}
-        </Menu>
+        <Menu.Item key={item?._id}>
+          <div className="flex items-center relative">
+            {level === "parent" && !hasCategories ? (
+              <Link href={`/products?filter=${item?.name}`}>{item?.name}</Link>
+            ) : level === "parent" ? (
+              <div
+                onClick={() => navigateTo(item.categories, item)}
+                className="cursor-pointer flex items-center"
+              >
+                {item?.name}
+                <RightOutlined className="ml-2 absolute right-0" />
+              </div>
+            ) : hasSubcategories ? (
+              <div
+                onClick={() => navigateTo(item.subcategories, item)}
+                className="cursor-pointer flex items-center"
+              >
+                {item?.name}
+                <RightOutlined className="ml-2 absolute right-0" />
+              </div>
+            ) : (
+              <Link href={`/products?filter=${item?.name}`}>{item?.name}</Link>
+            )}
+          </div>
+        </Menu.Item>
       );
-    } else {
-      return <p>No categories available</p>;
-    }
-  };
-
-  const renderParentCategories = () => {
-    return categories?.results
-      ?.filter((item) => item?.level === "parentCategory")
-      .map((parentCategory) => {
-        return parentCategory?.categories?.length > 0 ? (
-          <Menu.Item
-            key={parentCategory?._id}
-            onClick={() => openSubCategoryDrawer(parentCategory)}
-          >
-            <div className="flex items-center relative">
-              {parentCategory?.name}
-              {parentCategory?.categories &&
-                parentCategory?.categories.length > 0 && (
-                  <RightOutlined className="ml-2 absolute right-0" />
-                )}
-            </div>
-          </Menu.Item>
-        ) : (
-          <Menu.Item key={parentCategory?._id}>
-            <Link
-              href={`/products?filter=${parentCategory?.name}`}
-              className="flex items-center"
-            >
-              {parentCategory?.name}
-              {parentCategory?.categories &&
-                parentCategory?.categories.length > 0 && (
-                  <RightOutlined className="ml-2" />
-                )}
-            </Link>
-          </Menu.Item>
-        );
-      });
+    });
   };
 
   return (
@@ -110,29 +104,29 @@ const CategoryNavigation = () => {
       </div>
 
       <Drawer
-        title="Categories"
         placement="left"
         onClose={closeDrawer}
         open={drawerVisible}
         width={300}
-      >
-        <div className="flex flex-col py-3 text-black">
-          <Menu>{renderParentCategories()}</Menu>
-        </div>
-      </Drawer>
-
-      <Drawer
-        placement="left"
-        onClose={closeDrawer}
-        open={subCategoryDrawerVisible}
-        width={300}
+        maskClosable={true}
       >
         <div className="flex items-center">
-          <Button onClick={backToParentDrawer} icon={<ArrowLeftOutlined />} />
-          <span className="ml-2">{currentCategory?.name}</span>
+          {drawerStack.length > 0 && (
+            <Button
+              onClick={goBack}
+              icon={<ArrowLeftOutlined />}
+              className="mr-2"
+            />
+          )}
+          {currentTitle}
         </div>
         <div className="flex flex-col py-3 text-black">
-          {currentCategory ? renderSubcategories(currentCategory) : null}
+          <Menu>
+            {renderMenuItems(
+              currentItems,
+              drawerStack.length === 0 ? "parent" : "category"
+            )}
+          </Menu>
         </div>
       </Drawer>
     </div>

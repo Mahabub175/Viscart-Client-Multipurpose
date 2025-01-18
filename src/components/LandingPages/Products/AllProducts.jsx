@@ -64,6 +64,7 @@ const AllProducts = ({ searchParams }) => {
     if (searchParams) {
       debouncedSetSearchFilter(searchParams);
     } else {
+      setSearchFilter("");
       setSelectedBrands([]);
       setSelectedCategories([]);
       setPriceRange([0, 10000]);
