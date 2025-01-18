@@ -31,6 +31,8 @@ const AllProducts = ({ searchParams }) => {
   const [searchFilter, setSearchFilter] = useState("");
   const [availability, setAvailability] = useState("inStock");
   const [loading, setLoading] = useState(false);
+  const [delayedLoading, setDelayedLoading] = useState(true);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   const { data: globalData } = useGetAllGlobalSettingQuery();
@@ -114,7 +116,6 @@ const AllProducts = ({ searchParams }) => {
             ? product.stock === 0
             : true;
 
-        // Check if the search filter matches product name or other attributes
         const isSearchMatch =
           searchFilter?.length > 0
             ? product?.name?.toLowerCase().includes(searchFilter) ||
@@ -147,12 +148,11 @@ const AllProducts = ({ searchParams }) => {
       }
 
       setTimeout(() => {
-        setFilteredProducts(sorted); // Apply the final filtered list
+        setFilteredProducts(sorted);
         setLoading(false);
       }, 200);
     };
 
-    // Apply filters when active products, filters, or searchParams change
     applyFilters();
   }, [
     activeProducts,
@@ -161,7 +161,7 @@ const AllProducts = ({ searchParams }) => {
     priceRange,
     sorting,
     availability,
-    searchFilter, // Add searchFilter as dependency
+    searchFilter,
   ]);
 
   const handlePageChange = (page, size) => {
@@ -189,13 +189,22 @@ const AllProducts = ({ searchParams }) => {
     setAvailability(e.target.value);
   };
 
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setDelayedLoading(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
   return (
     <section className="py-10 relative bg-white">
       <div className="my-container">
         <div className="bg-grey flex items-center gap-2 justify-between py-3 px-2 lg:px-6 mb-6 rounded-xl">
           <p className="text-xs md:text-base">
             <span className="font-semibold text-lg">
-              {filteredProducts?.length}
+              {loading || delayedLoading ? "..." : filteredProducts?.length}
             </span>{" "}
             products showing.
           </p>
@@ -291,7 +300,7 @@ const AllProducts = ({ searchParams }) => {
           </div>
           <div className="w-full">
             <div>
-              {loading ? (
+              {loading || delayedLoading ? (
                 <div className="flex justify-center py-10">
                   <Spin size="large" />
                 </div>
