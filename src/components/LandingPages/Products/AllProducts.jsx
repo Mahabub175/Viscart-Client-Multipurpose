@@ -11,6 +11,7 @@ import {
   Button,
   Modal,
   Radio,
+  Spin,
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { paginationNumbers } from "@/assets/data/paginationData";
@@ -30,6 +31,8 @@ const AllProducts = ({ searchParams }) => {
   const [filterModal, setFilterModal] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
   const [availability, setAvailability] = useState("inStock");
+  const [loading, setLoading] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: brandData } = useGetAllBrandsQuery();
@@ -89,35 +92,53 @@ const AllProducts = ({ searchParams }) => {
     }
   }, [searchFilter, activeBrands, activeCategories]);
 
-  const filteredProducts = useMemo(() => {
-    const filtered = activeProducts?.filter((product) => {
-      const isBrandMatch = selectedBrands.length
-        ? selectedBrands.includes(product?.brand?.name)
-        : true;
-      const isCategoryMatch = selectedCategories.length
-        ? selectedCategories.includes(product?.category?.name)
-        : true;
-      const isPriceMatch =
-        product.sellingPrice >= priceRange[0] &&
-        product.sellingPrice <= priceRange[1];
-      const isAvailabilityMatch =
-        availability === "inStock"
-          ? product.stock > 0
-          : availability === "outOfStock"
-          ? product.stock === 0
-          : true;
-      return (
-        isBrandMatch && isCategoryMatch && isPriceMatch && isAvailabilityMatch
-      );
-    });
+  useEffect(() => {
+    const applyFilters = () => {
+      setLoading(true);
 
-    if (sorting === "PriceLowToHigh") {
-      return filtered?.sort((a, b) => a.sellingPrice - b.sellingPrice);
-    }
-    if (sorting === "PriceHighToLow") {
-      return filtered?.sort((a, b) => b.sellingPrice - a.sellingPrice);
-    }
-    return filtered;
+      const filtered = activeProducts?.filter((product) => {
+        const isBrandMatch = selectedBrands.length
+          ? selectedBrands.includes(product?.brand?.name)
+          : true;
+        const isCategoryMatch = selectedCategories.length
+          ? selectedCategories.includes(product?.category?.name)
+          : true;
+        const isPriceMatch =
+          product.sellingPrice >= priceRange[0] &&
+          product.sellingPrice <= priceRange[1];
+        const isAvailabilityMatch =
+          availability === "inStock"
+            ? product.stock > 0
+            : availability === "outOfStock"
+            ? product.stock === 0
+            : true;
+        return (
+          isBrandMatch && isCategoryMatch && isPriceMatch && isAvailabilityMatch
+        );
+      });
+
+      let sorted = [...filtered];
+      if (sorting === "PriceLowToHigh") {
+        sorted = sorted.sort((a, b) => {
+          const offerPriceA = a.offerPrice || a.sellingPrice;
+          const offerPriceB = b.offerPrice || b.sellingPrice;
+          return offerPriceA - offerPriceB;
+        });
+      } else if (sorting === "PriceHighToLow") {
+        sorted = sorted.sort((a, b) => {
+          const offerPriceA = a.offerPrice || a.sellingPrice;
+          const offerPriceB = b.offerPrice || b.sellingPrice;
+          return offerPriceB - offerPriceA;
+        });
+      }
+
+      setTimeout(() => {
+        setFilteredProducts(sorted);
+        setLoading(false);
+      }, 200);
+    };
+
+    applyFilters();
   }, [
     activeProducts,
     selectedBrands,
@@ -254,7 +275,11 @@ const AllProducts = ({ searchParams }) => {
           </div>
           <div className="w-full">
             <div>
-              {filteredProducts?.length > 0 ? (
+              {loading ? (
+                <div className="flex justify-center py-10">
+                  <Spin size="large" />
+                </div>
+              ) : filteredProducts?.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-wrap gap-5">
                   {filteredProducts?.map((product) => (
                     <ProductCard key={product?._id} item={product} />
@@ -267,7 +292,7 @@ const AllProducts = ({ searchParams }) => {
               )}
               <Pagination
                 className="flex justify-end items-center !mt-10"
-                total={productData?.meta?.totalCount}
+                total={filteredProducts?.length}
                 current={currentPage}
                 onChange={handlePageChange}
                 pageSize={pageSize}

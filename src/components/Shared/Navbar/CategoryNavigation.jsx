@@ -23,7 +23,7 @@ const CategoryNavigation = () => {
       (item) => item?.level === "parentCategory"
     );
     setCurrentItems(parentCategories || []);
-    setCurrentTitle("Categories");
+    setCurrentTitle("");
     setDrawerStack([]);
   };
 
@@ -40,7 +40,7 @@ const CategoryNavigation = () => {
       { title: currentTitle, items: currentItems },
     ]);
     setCurrentItems(items);
-    setCurrentTitle(currentCategory?.name || "Categories");
+    setCurrentTitle(currentCategory?.name || "");
   };
 
   const goBack = () => {
