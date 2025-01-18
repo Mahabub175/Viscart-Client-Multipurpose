@@ -46,7 +46,7 @@ const ProductCard = ({ item }) => {
                   ? item?.mainImage
                   : formatImagePath(item?.mainImage)
               }
-              alt={item?.name}
+              alt={item?.name ?? "Product Image"}
               width={200}
               height={260}
               className="h-[180px] lg:h-[200px] group-hover:scale-110 duration-500"

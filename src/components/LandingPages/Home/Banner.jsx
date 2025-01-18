@@ -46,7 +46,7 @@ const Banner = () => {
                         item?.attachment ??
                         "https://thumbs.dreamstime.com/b/demo-demo-icon-139882881.jpg"
                       }
-                      alt={item.name}
+                      alt={item.name ?? "slider image"}
                       width={2500}
                       height={700}
                       className="w-full h-full object-cover"

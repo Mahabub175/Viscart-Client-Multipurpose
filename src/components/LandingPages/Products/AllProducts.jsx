@@ -14,7 +14,6 @@ import {
   Spin,
 } from "antd";
 import { useEffect, useMemo, useState } from "react";
-import { paginationNumbers } from "@/assets/data/paginationData";
 import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 import ProductCard from "../Home/Products/ProductCard";
 import { debounce } from "lodash";
@@ -23,7 +22,7 @@ const { Option } = Select;
 
 const AllProducts = ({ searchParams }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(18);
+  const [pageSize, setPageSize] = useState(20);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -97,7 +96,7 @@ const AllProducts = ({ searchParams }) => {
     const applyFilters = () => {
       setLoading(true);
 
-      const filtered = activeProducts?.filter((product) => {
+      let filtered = activeProducts?.filter((product) => {
         if (!product) return false;
         const isBrandMatch = selectedBrands.length
           ? selectedBrands.includes(product?.brand?.name)
@@ -114,8 +113,21 @@ const AllProducts = ({ searchParams }) => {
             : availability === "outOfStock"
             ? product.stock === 0
             : true;
+
+        // Check if the search filter matches product name or other attributes
+        const isSearchMatch =
+          searchFilter?.length > 0
+            ? product?.name?.toLowerCase().includes(searchFilter) ||
+              product?.brand?.name?.toLowerCase().includes(searchFilter) ||
+              product?.category?.name?.toLowerCase().includes(searchFilter)
+            : true;
+
         return (
-          isBrandMatch && isCategoryMatch && isPriceMatch && isAvailabilityMatch
+          isBrandMatch &&
+          isCategoryMatch &&
+          isPriceMatch &&
+          isAvailabilityMatch &&
+          isSearchMatch
         );
       });
 
@@ -135,11 +147,12 @@ const AllProducts = ({ searchParams }) => {
       }
 
       setTimeout(() => {
-        setFilteredProducts(sorted);
+        setFilteredProducts(sorted); // Apply the final filtered list
         setLoading(false);
       }, 200);
     };
 
+    // Apply filters when active products, filters, or searchParams change
     applyFilters();
   }, [
     activeProducts,
@@ -148,6 +161,7 @@ const AllProducts = ({ searchParams }) => {
     priceRange,
     sorting,
     availability,
+    searchFilter, // Add searchFilter as dependency
   ]);
 
   const handlePageChange = (page, size) => {
@@ -294,12 +308,10 @@ const AllProducts = ({ searchParams }) => {
               )}
               <Pagination
                 className="flex justify-end items-center !mt-10"
-                total={filteredProducts?.length}
+                total={productData?.meta?.totalCount}
                 current={currentPage}
                 onChange={handlePageChange}
                 pageSize={pageSize}
-                showSizeChanger
-                pageSizeOptions={paginationNumbers}
                 simple
               />
             </div>
