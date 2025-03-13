@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import DrawerCart from "../Product/DrawerCart";
 import CategoryNavigation from "./CategoryNavigation";
+import logo from "@/assets/images/logo-white.png";
 
 const LandingHeader = () => {
   const pathname = usePathname();
@@ -102,8 +103,8 @@ const LandingHeader = () => {
 
     const filteredOptions = products?.results?.filter(
       (product) =>
-        product.name.toLowerCase().includes(value.toLowerCase()) ||
-        product.category.name?.toLowerCase().includes(value.toLowerCase())
+        product?.name?.toLowerCase().includes(value.toLowerCase()) ||
+        product?.category?.name?.toLowerCase().includes(value.toLowerCase())
     );
 
     setOptions(
@@ -143,12 +144,13 @@ const LandingHeader = () => {
     >
       <nav className="px-2 py-2 lg:-my-3">
         <div className="flex justify-around items-center gap-5">
-          <Link href={"/"} className="">
+          <Link href={"/"} className="py-5">
             <Image
-              src={globalData?.results?.logo}
+              src={globalData?.results?.logo ?? logo}
               alt="logo"
               width={100}
               height={100}
+              className="w-full h-full"
             />
           </Link>
           <div className="relative w-full">
