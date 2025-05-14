@@ -9,8 +9,10 @@ import {
 } from "@ant-design/icons";
 import { Drawer, Button, Menu } from "antd";
 import Link from "next/link";
+import Image from "next/image";
+import { GiCancel } from "react-icons/gi";
 
-const CategoryNavigation = () => {
+const CategoryNavigation = ({ globalData }) => {
   const { data: categories } = useGetAllCategoriesQuery();
   const [drawerStack, setDrawerStack] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
@@ -110,6 +112,23 @@ const CategoryNavigation = () => {
         width={300}
         maskClosable={true}
       >
+        <div className="flex items-center justify-between gap-4 -mt-5">
+          <Link href={"/"}>
+            <Image
+              src={globalData?.results?.logo}
+              alt="logo"
+              width={80}
+              height={80}
+              className="w-full h-full"
+            />
+          </Link>
+          <button
+            className="mt-1 bg-gray-200 hover:scale-110 duration-500 rounded-full p-1"
+            onClick={closeDrawer}
+          >
+            <GiCancel className="text-xl text-gray-700" />
+          </button>
+        </div>
         <div className="flex items-center">
           {drawerStack.length > 0 && (
             <Button

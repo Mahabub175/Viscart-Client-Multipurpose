@@ -14,7 +14,7 @@ const LandingFooter = () => {
   return (
     <section className="bg-[#232f3e] border-t mt-10 mb-16 lg:mb-0 text-white">
       <footer className="pt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-0 xl:gap-10 items-start justify-center max-w-7xl mx-auto px-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 md:gap-0 xl:gap-10 items-start justify-center max-w-7xl mx-auto px-5">
           <div className="flex flex-col items-start gap-4">
             <h3 className="text-xl font-medium mb-2">Social</h3>
             <Link

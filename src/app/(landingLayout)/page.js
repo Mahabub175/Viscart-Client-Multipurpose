@@ -1,16 +1,17 @@
 import Banner from "@/components/LandingPages/Home/Banner";
+import RecentlyViewedProducts from "@/components/LandingPages/Home/Products/RecentlyViewedProducts";
 import Categories from "@/components/LandingPages/Home/Categories";
+import NewArrivalProducts from "@/components/LandingPages/Home/Products/NewArrivalProducts";
+import ThirdSectionCategories from "@/components/LandingPages/Home/Products/ThirdSectionCategory";
+import OfferProducts from "@/components/LandingPages/Home/Products/OfferProducts";
+import FourthSectionCategories from "@/components/LandingPages/Home/Products/FourthSectionCategories";
 import FeatureProducts from "@/components/LandingPages/Home/Products/FeaturedProducts";
 import FifthSectionCategories from "@/components/LandingPages/Home/Products/FifthSectionCategories";
-import FourthSectionCategories from "@/components/LandingPages/Home/Products/FourthSectionCategories";
-import NewArrivalProducts from "@/components/LandingPages/Home/Products/NewArrivalProducts";
-import OfferProducts from "@/components/LandingPages/Home/Products/OfferProducts";
-import ThirdSectionCategories from "@/components/LandingPages/Home/Products/ThirdSectionCategory";
-import TopRatedProducts from "@/components/LandingPages/Home/Products/TopRatedProducts";
+import TopRatedProducts from "@/components/LandingPages/Home/Products/FeaturedProducts";
 
 export const metadata = {
   title: "Home | Viscart",
-  description: "This is the homepage of Viscart website.",
+  description: "This is the homepage of Viscart",
 };
 
 const page = async () => {
@@ -25,6 +26,7 @@ const page = async () => {
       <FeatureProducts />
       <FifthSectionCategories />
       <TopRatedProducts />
+      <RecentlyViewedProducts />
     </div>
   );
 };

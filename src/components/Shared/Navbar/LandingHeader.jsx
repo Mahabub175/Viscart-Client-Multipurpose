@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useGetSingleUserQuery } from "@/redux/services/auth/authApi";
-import { logout, useCurrentUser } from "@/redux/services/auth/authSlice";
+import logo from "@/assets/images/logo.png";
+import { useCurrentUser } from "@/redux/services/auth/authSlice";
 import { useGetSingleCartByUserQuery } from "@/redux/services/cart/cartApi";
 import { useGetSingleCompareByUserQuery } from "@/redux/services/compare/compareApi";
 import { useDeviceId } from "@/redux/services/device/deviceSlice";
@@ -10,90 +10,33 @@ import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/glob
 import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
 import { useGetSingleWishlistByUserQuery } from "@/redux/services/wishlist/wishlistApi";
 import { formatImagePath } from "@/utilities/lib/formatImagePath";
-import { UserOutlined } from "@ant-design/icons";
-import { AutoComplete, Avatar, Button, Drawer, Popover } from "antd";
+import { AutoComplete, Drawer, Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { FaHeart, FaSearch, FaShoppingBag } from "react-icons/fa";
 import { FaCodeCompare } from "react-icons/fa6";
 import { GiCancel } from "react-icons/gi";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
+import { useSelector } from "react-redux";
 import DrawerCart from "../Product/DrawerCart";
 import CategoryNavigation from "./CategoryNavigation";
-import logo from "@/assets/images/logo-white.png";
 
 const LandingHeader = () => {
-  const pathname = usePathname();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [options, setOptions] = useState([]);
-  const dispatch = useDispatch();
   const user = useSelector(useCurrentUser);
   const deviceId = useSelector(useDeviceId);
-  const { data } = useGetSingleUserQuery(user?._id);
   const { data: compareData } = useGetSingleCompareByUserQuery(
     user?._id ?? deviceId
   );
   const { data: wishListData } = useGetSingleWishlistByUserQuery(
     user?._id ?? deviceId
   );
-  const { data: cartData, refetch } = useGetSingleCartByUserQuery(
-    user?._id ?? deviceId
-  );
+  const { data: cartData } = useGetSingleCartByUserQuery(user?._id ?? deviceId);
 
   const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: products } = useGetAllProductsQuery();
-
-  const handleLogout = () => {
-    dispatch(logout());
-    toast.success("Logged out successfully!");
-  };
-
-  const links = {
-    Dashboard: `/${data?.role}/dashboard`,
-    Order: `/${data?.role}/orders/order`,
-    Profile: `/${data?.role}/account-setting`,
-    Wishlist: `/${data?.role}/orders/wishlist`,
-    Cart: `/${data?.role}/orders/cart`,
-  };
-
-  const content = (
-    <div>
-      <div className="rounded-md px-16 py-3">
-        <div className="flex flex-col items-start gap-4 text-md">
-          {["Dashboard", "Order", "Profile", "Wishlist", "Cart"].map(
-            (item, index) => (
-              <Link
-                key={index}
-                href={links[item]}
-                className={`gap-2 font-bold duration-300 ${
-                  pathname === links[item]
-                    ? "text-primary hover:text-primary"
-                    : "text-black hover:text-primary"
-                }`}
-              >
-                {item}
-              </Link>
-            )
-          )}
-        </div>
-      </div>
-
-      <div className="flex w-full justify-end pt-3">
-        <Button
-          onClick={handleLogout}
-          className={`w-full font-bold`}
-          size="large"
-          type="primary"
-        >
-          Log Out
-        </Button>
-      </div>
-    </div>
-  );
 
   const handleSearch = (value) => {
     if (!value) {
@@ -114,6 +57,7 @@ const LandingHeader = () => {
           <Link
             href={`/products/${product?.slug}`}
             className="flex items-center gap-4 hover:text-primary pb-2 border-b border-b-gray-300"
+            onClick={() => setIsSearchOpen(false)}
           >
             <Image
               src={formatImagePath(product?.mainImage)}
@@ -143,8 +87,8 @@ const LandingHeader = () => {
       className={`w-full bg-[#0f1111] shadow-md transition-transform duration-300 z-50`}
     >
       <nav className="px-2 py-2 lg:-my-3">
-        <div className="flex justify-around items-center gap-5">
-          <Link href={"/"} className="py-5">
+        <div className="flex justify-between lg:justify-around items-center gap-5">
+          <Link href={"/"} className="lg:py-5">
             <Image
               src={globalData?.results?.logo ?? logo}
               alt="logo"
@@ -153,7 +97,7 @@ const LandingHeader = () => {
               className="w-full h-full"
             />
           </Link>
-          <div className="relative w-full">
+          <div className="relative w-full hidden lg:block">
             <AutoComplete
               options={options}
               onSearch={handleSearch}
@@ -165,45 +109,10 @@ const LandingHeader = () => {
           </div>
 
           <div className="flex gap-6 items-center">
-            {user?._id ? (
-              <>
-                {" "}
-                <div className="flex items-center gap-2 mr-5">
-                  <Popover
-                    placement="bottomRight"
-                    content={content}
-                    className="cursor-pointer flex items-center gap-1"
-                  >
-                    {data?.profile_image ? (
-                      <Image
-                        src={data?.profile_image}
-                        alt="profile"
-                        height={40}
-                        width={40}
-                        className="rounded-full w-[40px] h-[40px] border-2 border-primary"
-                      />
-                    ) : (
-                      <Avatar className="" size={40} icon={<UserOutlined />} />
-                    )}
-                    <h2 className="font-normal text-sm text-white flex items-center">
-                      {data?.name ?? "User"}
-                      <IoMdArrowDropdown className="text-white" />
-                    </h2>
-                  </Popover>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href={"/sign-in"}
-                  className="text-sm text-white flex flex-col w-[100px] hover:text-primary duration-300"
-                >
-                  <span>Hello, Sign In</span>
-                  <span className="font-semibold">Accounts</span>
-                </Link>
-              </>
-            )}
-
+            <FaSearch
+              className="text-white"
+              onClick={() => setIsSearchOpen(true)}
+            />
             <Link
               href={"/compare"}
               className="hidden lg:flex text-white text-sm cursor-pointer"
@@ -247,7 +156,7 @@ const LandingHeader = () => {
               )}
             </Link>
             <div
-              className="hidden lg:flex cursor-pointer text-sm text-white"
+              className="cursor-pointer text-sm text-white"
               onClick={() => setIsCartOpen(true)}
             >
               {cartData?.length > 0 ? (
@@ -274,8 +183,25 @@ const LandingHeader = () => {
         </div>
       </nav>
       <div className="flex gap-6 items-center bg-[#232f3e]">
-        <CategoryNavigation />
+        <CategoryNavigation globalData={globalData} />
       </div>
+
+      <Modal
+        open={isSearchOpen}
+        onCancel={() => setIsSearchOpen(false)}
+        footer={null}
+        destroyOnClose
+        closeIcon={null}
+      >
+        <AutoComplete
+          options={options}
+          onSearch={handleSearch}
+          placeholder="Search for Products..."
+          size="large"
+          className="w-full"
+        />
+        <FaSearch className="absolute right-7 top-1/2 -translate-y-1/2 text-primary text-xl" />
+      </Modal>
 
       <Drawer
         placement="right"
@@ -294,7 +220,7 @@ const LandingHeader = () => {
             <GiCancel className="text-xl text-gray-700" />
           </button>
         </div>
-        <DrawerCart data={cartData} refetch={refetch} />
+        <DrawerCart data={cartData} setDrawer={setIsCartOpen} />
       </Drawer>
     </header>
   );

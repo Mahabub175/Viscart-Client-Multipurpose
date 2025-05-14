@@ -5,7 +5,5 @@ export const formatImagePath = (imagePath) => {
     return undefined;
   }
 
-  return `${base_url_image}${imagePath
-    ?.replace(/\/$/, "/")
-    .replace(/\s+/g, "%20")}`;
+  return `${base_url_image}${imagePath?.replace(/\/$/, "/")}`;
 };

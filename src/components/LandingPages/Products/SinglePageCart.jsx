@@ -85,6 +85,8 @@ const SinglePageCart = ({ params }) => {
 
   const currentPrice = currentVariant
     ? currentVariant?.sellingPrice
+    : singleProduct?.offerPrice && singleProduct?.offerPrice > 0
+    ? singleProduct?.offerPrice
     : singleProduct?.sellingPrice;
 
   const currentImage = selectedImage
@@ -145,11 +147,11 @@ const SinglePageCart = ({ params }) => {
 
   const isOutOfStock = singleProduct?.stock <= 0 || currentVariant?.stock <= 0;
   return (
-    <section className="container mx-auto px-2 lg:px-5 py-10 -mt-5 lg:-mt-0">
-      <div className="p-5 mb-10 shadow-xl">
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-10 mb-10">
+    <section className="my-container py-10 -mt-5 lg:-mt-0">
+      <div className="border-2 border-primary rounded-xl p-5 mb-10 shadow-xl">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 mb-10">
           <div className="relative mx-auto flex flex-col lg:flex-row-reverse items-center lg:gap-5">
-            <div className="relative mx-auto lg:w-[300px] xl:w-full lg:mr-20 xl:mr-0">
+            <div className="relative mx-auto lg:w-[300px] xl:w-full">
               {isVideoPlaying && singleProduct?.video ? (
                 <video
                   src={formatImagePath(singleProduct?.video)}
@@ -160,35 +162,21 @@ const SinglePageCart = ({ params }) => {
                   Your browser does not support the video tag.
                 </video>
               ) : currentImage ? (
-                <>
-                  {/* <div className="hidden lg:block">
-                    <Magnifier
-                      src={currentImage}
-                      width={400}
-                      height={300}
-                      zoomImgSrc={currentImage}
-                      zoomFactor={2}
-                      zoomSize={200}
-                    />
-                  </div> */}
-                  <div>
-                    <Zoom>
-                      <Image
-                        src={currentImage}
-                        alt="product image"
-                        height={450}
-                        width={450}
-                        className="mx-auto rounded-xl"
-                      />
-                    </Zoom>
-                  </div>
-                </>
+                <Zoom>
+                  <Image
+                    src={currentImage}
+                    alt="product image"
+                    height={400}
+                    width={400}
+                    className="mx-auto rounded-xl"
+                  />
+                </Zoom>
               ) : (
                 <p>No image available</p>
               )}
             </div>
 
-            <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[138px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
+            <div className="flex flex-row lg:flex-col justify-start gap-2 mt-5 max-h-[400px] w-[300px] lg:w-auto xl:w-[149px] border rounded-xl p-4 !overflow-x-auto lg:overflow-y-auto thumbnail">
               {allMedia?.map((media, index) => (
                 <div
                   key={index}
@@ -221,7 +209,7 @@ const SinglePageCart = ({ params }) => {
               ))}
             </div>
           </div>
-          <div className="lg:w-1/2 flex flex-col gap-3 -mt-10 lg:-mt-0">
+          <div className="lg:w-1/2 flex flex-col gap-3">
             <h2 className="text-xl lg:text-3xl font-medium">
               {singleProduct?.name}
             </h2>
@@ -309,7 +297,7 @@ const SinglePageCart = ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto lg:mt-20">
+        <div className="max-w-6xl mx-auto">
           <SingleProductCart
             item={currentVariant ?? singleProduct}
             count={count}

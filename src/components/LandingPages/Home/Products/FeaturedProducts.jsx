@@ -13,19 +13,19 @@ import { useRef } from "react";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import LinkButton from "@/components/Shared/LinkButton";
 
-const FeatureProducts = () => {
+const TopRatedProducts = () => {
   const swiperRef = useRef();
 
   const { data: productData } = useGetAllProductsQuery();
 
-  const activeProducts = productData?.results?.filter(
-    (item) => item?.status !== "Inactive" && item?.isFeatured
-  );
+  const activeProducts = productData?.results
+    ?.filter((item) => item?.status !== "Inactive")
+    ?.sort((a, b) => (b?.ratings?.average || 0) - (a?.ratings?.average || 0));
 
   return (
     <section className="container mx-auto px-2 lg:px-10 mt-10">
       <div className=" bg-white p-5">
-        <h2 className="text-2xl font-semibold mb-2">Featured Products</h2>
+        <h2 className="text-2xl font-semibold mb-2">Top Rated Products</h2>
 
         {activeProducts?.length > 0 ? (
           <div>
@@ -85,4 +85,4 @@ const FeatureProducts = () => {
   );
 };
 
-export default FeatureProducts;
+export default TopRatedProducts;
