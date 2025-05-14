@@ -2,7 +2,7 @@
 "use client";
 
 import logo from "@/assets/images/logo.png";
-import { useCurrentUser } from "@/redux/services/auth/authSlice";
+import { logout, useCurrentUser } from "@/redux/services/auth/authSlice";
 import { useGetSingleCartByUserQuery } from "@/redux/services/cart/cartApi";
 import { useGetSingleCompareByUserQuery } from "@/redux/services/compare/compareApi";
 import { useDeviceId } from "@/redux/services/device/deviceSlice";
@@ -10,16 +10,21 @@ import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/glob
 import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
 import { useGetSingleWishlistByUserQuery } from "@/redux/services/wishlist/wishlistApi";
 import { formatImagePath } from "@/utilities/lib/formatImagePath";
-import { AutoComplete, Drawer, Modal } from "antd";
+import { AutoComplete, Avatar, Button, Drawer, Modal, Popover } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { FaHeart, FaSearch, FaShoppingBag } from "react-icons/fa";
+import { FaHeart, FaSearch, FaShoppingBag, FaUser } from "react-icons/fa";
 import { FaCodeCompare } from "react-icons/fa6";
 import { GiCancel } from "react-icons/gi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DrawerCart from "../Product/DrawerCart";
 import CategoryNavigation from "./CategoryNavigation";
+import { useGetSingleUserQuery } from "@/redux/services/auth/authApi";
+import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { UserOutlined } from "@ant-design/icons";
 
 const LandingHeader = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -37,6 +42,12 @@ const LandingHeader = () => {
 
   const { data: globalData } = useGetAllGlobalSettingQuery();
   const { data: products } = useGetAllProductsQuery();
+
+  const { data } = useGetSingleUserQuery(user?._id);
+
+  const dispatch = useDispatch();
+
+  const pathname = usePathname();
 
   const handleSearch = (value) => {
     if (!value) {
@@ -82,6 +93,54 @@ const LandingHeader = () => {
     );
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully!");
+  };
+
+  const links = {
+    Dashboard: `/${data?.role}/dashboard`,
+    Order: `/${data?.role}/orders/order`,
+    Profile: `/${data?.role}/account-setting`,
+    Wishlist: `/${data?.role}/orders/wishlist`,
+    Cart: `/${data?.role}/orders/cart`,
+  };
+
+  const content = (
+    <div>
+      <div className="rounded-md px-16 py-3">
+        <div className="flex flex-col items-start gap-4 text-md">
+          {["Dashboard", "Order", "Profile", "Wishlist", "Cart"].map(
+            (item, index) => (
+              <Link
+                key={index}
+                href={links[item]}
+                className={`gap-2 font-bold duration-300 ${
+                  pathname === links[item]
+                    ? "text-primary hover:text-primary"
+                    : "text-black hover:text-primary"
+                }`}
+              >
+                {item}
+              </Link>
+            )
+          )}
+        </div>
+      </div>
+
+      <div className="flex w-full justify-end pt-3">
+        <Button
+          onClick={handleLogout}
+          className={`w-full font-bold`}
+          size="large"
+          type="primary"
+        >
+          Log Out
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <header
       className={`w-full bg-[#0f1111] shadow-md transition-transform duration-300 z-50`}
@@ -110,9 +169,53 @@ const LandingHeader = () => {
 
           <div className="flex gap-6 items-center">
             <FaSearch
-              className="text-white lg:hidden"
+              className="text-white lg:hidden cursor-pointer hover:text-primary duration-300"
               onClick={() => setIsSearchOpen(true)}
             />
+            <div className="hidden lg:block">
+              {user?._id ? (
+                <>
+                  {" "}
+                  <div className="flex items-center gap-2">
+                    <Popover
+                      placement="bottomRight"
+                      content={content}
+                      className="cursor-pointer flex items-center gap-1 mr-2"
+                    >
+                      {data?.profile_image ? (
+                        <Image
+                          src={data?.profile_image}
+                          alt="profile"
+                          height={40}
+                          width={40}
+                          className="rounded-full w-[40px] h-[40px] border-2 border-primary"
+                        />
+                      ) : (
+                        <Avatar
+                          className=""
+                          size={40}
+                          icon={<UserOutlined />}
+                        />
+                      )}
+                      <h2 className="font-medium text-white">
+                        {data?.name ?? "User"}
+                      </h2>
+                      <IoMdArrowDropdown className="text-white" />
+                    </Popover>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href={"/sign-in"}
+                    className="flex items-center gap-2 text-white hover:text-primary duration-300 text-sm"
+                  >
+                    <FaUser className="cursor-pointer hover:text-primary duration-300" />
+                    Login
+                  </Link>
+                </>
+              )}
+            </div>
             <Link
               href={"/compare"}
               className="hidden lg:flex text-white text-sm cursor-pointer"

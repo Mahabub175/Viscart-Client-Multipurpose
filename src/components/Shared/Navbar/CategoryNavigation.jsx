@@ -93,7 +93,7 @@ const CategoryNavigation = ({ globalData }) => {
     <div className="px-2 lg:px-5 -my-2">
       <div className="flex items-center justify-between py-2 lg:py-3 text-white gap-5">
         <div
-          className="flex items-center text-white hover:text-white gap-2"
+          className="flex items-center text-white hover:text-white gap-2 cursor-pointer"
           onClick={openDrawer}
         >
           <MenuOutlined />
