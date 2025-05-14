@@ -110,7 +110,7 @@ const LandingHeader = () => {
 
           <div className="flex gap-6 items-center">
             <FaSearch
-              className="text-white"
+              className="text-white lg:hidden"
               onClick={() => setIsSearchOpen(true)}
             />
             <Link
