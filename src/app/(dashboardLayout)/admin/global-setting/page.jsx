@@ -394,6 +394,16 @@ const GlobalSetting = () => {
             type={"password"}
           />
           <CustomInput
+            name={"deliveryApiKey"}
+            label={"Delivery API Key"}
+            type={"password"}
+          />
+          <CustomInput
+            name={"deliverySecretKey"}
+            label={"Delivery Secret Key"}
+            type={"password"}
+          />
+          <CustomInput
             name={"fbPixelId"}
             label={"Facebook Pixel ID"}
             type={"password"}
