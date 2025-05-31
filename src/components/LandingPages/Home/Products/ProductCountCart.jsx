@@ -140,6 +140,7 @@ const ProductCountCart = ({
     : item?.offerPrice > 0
     ? item?.offerPrice
     : item?.sellingPrice;
+
   const isOutOfStock =
     item?.stock <= 0 ||
     previousSelectedVariant?.stock <= 0 ||
