@@ -11,9 +11,12 @@ import { useEffect, useRef } from "react";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { useAddServerTrackingMutation } from "@/redux/services/serverTracking/serverTrackingApi";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setFilter } from "@/redux/services/device/deviceSlice";
 
 const Banner = () => {
   const swiperRef = useRef();
+  const dispatch = useDispatch();
 
   const { data: sliders } = useGetAllSlidersQuery();
 
@@ -35,6 +38,12 @@ const Banner = () => {
     (item) => item.status === "Active" && !item?.bottomBanner
   );
 
+  const itemClickHandler = (item) => {
+    if (item?.category?.name) {
+      dispatch(setFilter(item?.category?.name));
+    }
+  };
+
   return (
     <section className="relative lg:container mx-auto xl:px-5">
       <Swiper
@@ -54,8 +63,11 @@ const Banner = () => {
         {activeSliders?.map((item) => {
           return (
             <SwiperSlide key={item?._id}>
-              <Link href={`/products?filter=${item?.category?.name}`}>
-                <div className="relative">
+              <Link href={`/products`}>
+                <div
+                  className="relative"
+                  onClick={() => itemClickHandler(item)}
+                >
                   <div className="relative w-full h-[200px] lg:h-fit">
                     <Image
                       src={

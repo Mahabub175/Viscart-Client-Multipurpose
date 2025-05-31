@@ -134,11 +134,12 @@ const ProductCountCart = ({
       Object.keys(selectedAttributes).length;
 
   const currentPrice = currentVariant
-    ? currentVariant?.sellingPrice
-    : item?.offerPrice && item?.offerPrice > 0
+    ? currentVariant?.offerPrice > 0
+      ? currentVariant?.offerPrice
+      : currentVariant?.sellingPrice
+    : item?.offerPrice > 0
     ? item?.offerPrice
     : item?.sellingPrice;
-
   const isOutOfStock =
     item?.stock <= 0 ||
     previousSelectedVariant?.stock <= 0 ||

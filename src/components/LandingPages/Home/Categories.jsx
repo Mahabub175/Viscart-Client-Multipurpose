@@ -7,14 +7,23 @@ import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import Image from "next/image";
 import Link from "next/link";
 import "swiper/css";
-
+import { setFilter } from "@/redux/services/device/deviceSlice";
+import { useDispatch } from "react-redux";
 const Categories = () => {
+  const dispatch = useDispatch();
+
   const { data: categories } = useGetAllCategoriesQuery();
   const { data: globalData } = useGetAllGlobalSettingQuery();
 
   const activeCategories = categories?.results?.filter(
     (item) => item?.status !== "Inactive"
   );
+
+  const itemClickHandler = (item) => {
+    if (item?.name) {
+      dispatch(setFilter(item?.name));
+    }
+  };
 
   return (
     <>
@@ -40,10 +49,11 @@ const Categories = () => {
                         Top categories in {globalItem?.name}
                       </h2>
                       <div className="group" key={globalItem?._id}>
-                        <LinkButton
-                          href={`/products?filter=${globalItem?.name}`}
-                        >
-                          <div className="overflow-hidden w-full h-full mx-auto">
+                        <LinkButton href={`/products`}>
+                          <div
+                            className="overflow-hidden w-full h-full mx-auto"
+                            onClick={() => itemClickHandler(globalItem)}
+                          >
                             <Image
                               src={
                                 formatImagePath(globalItem?.attachment) ??
@@ -57,8 +67,11 @@ const Categories = () => {
                           </div>
                         </LinkButton>
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>
@@ -71,10 +84,11 @@ const Categories = () => {
                       <div className="grid grid-cols-2 gap-5 mb-5">
                         {matchingCategories?.slice(0, 4)?.map((category) => (
                           <div className="group" key={category?._id}>
-                            <LinkButton
-                              href={`/products?filter=${category?.name}`}
-                            >
-                              <div className="overflow-hidden w-full h-full mx-auto">
+                            <LinkButton href={`/products`}>
+                              <div
+                                className="overflow-hidden w-full h-full mx-auto"
+                                onClick={() => itemClickHandler(category)}
+                              >
                                 <Image
                                   src={
                                     category?.attachment ??
@@ -93,8 +107,11 @@ const Categories = () => {
                           </div>
                         ))}
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>
@@ -129,10 +146,11 @@ const Categories = () => {
                         Top categories in {globalItem?.name}
                       </h2>
                       <div className="group" key={globalItem?._id}>
-                        <LinkButton
-                          href={`/products?filter=${globalItem?.name}`}
-                        >
-                          <div className="overflow-hidden w-full h-full mx-auto">
+                        <LinkButton href={`/products`}>
+                          <div
+                            className="overflow-hidden w-full h-full mx-auto"
+                            onClick={() => itemClickHandler(globalItem)}
+                          >
                             <Image
                               src={
                                 formatImagePath(globalItem?.attachment) ??
@@ -146,8 +164,11 @@ const Categories = () => {
                           </div>
                         </LinkButton>
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>
@@ -160,10 +181,11 @@ const Categories = () => {
                       <div className="grid grid-cols-2 gap-5 mb-5">
                         {matchingCategories?.slice(0, 4)?.map((category) => (
                           <div className="group" key={category?._id}>
-                            <LinkButton
-                              href={`/products?filter=${category?.name}`}
-                            >
-                              <div className="overflow-hidden w-full h-full mx-auto">
+                            <LinkButton href={`/products`}>
+                              <div
+                                className="overflow-hidden w-full h-full mx-auto"
+                                onClick={() => itemClickHandler(category)}
+                              >
                                 <Image
                                   src={
                                     category?.attachment ??
@@ -182,8 +204,11 @@ const Categories = () => {
                           </div>
                         ))}
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>

@@ -2,19 +2,29 @@
 
 import LinkButton from "@/components/Shared/LinkButton";
 import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi";
+import { setFilter } from "@/redux/services/device/deviceSlice";
 import { useGetAllGlobalSettingQuery } from "@/redux/services/globalSetting/globalSettingApi";
 import { formatImagePath } from "@/utilities/lib/formatImagePath";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 import "swiper/css";
 
 const FifthSectionCategories = () => {
+  const dispatch = useDispatch();
+
   const { data: categories } = useGetAllCategoriesQuery();
   const { data: globalData } = useGetAllGlobalSettingQuery();
 
   const activeCategories = categories?.results?.filter(
     (item) => item?.status !== "Inactive"
   );
+
+  const itemClickHandler = (item) => {
+    if (item?.name) {
+      dispatch(setFilter(item?.name));
+    }
+  };
 
   return (
     <>
@@ -40,10 +50,11 @@ const FifthSectionCategories = () => {
                         Top categories in {globalItem?.name}
                       </h2>
                       <div className="group" key={globalItem?._id}>
-                        <LinkButton
-                          href={`/products?filter=${globalItem?.name}`}
-                        >
-                          <div className="overflow-hidden w-full h-full mx-auto">
+                        <LinkButton href={`/products`}>
+                          <div
+                            className="overflow-hidden w-full h-full mx-auto"
+                            onClick={() => itemClickHandler(globalItem)}
+                          >
                             <Image
                               src={
                                 formatImagePath(globalItem?.attachment) ??
@@ -57,8 +68,11 @@ const FifthSectionCategories = () => {
                           </div>
                         </LinkButton>
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>
@@ -71,10 +85,11 @@ const FifthSectionCategories = () => {
                       <div className="grid grid-cols-2 gap-5 mb-5">
                         {matchingCategories?.slice(0, 4)?.map((category) => (
                           <div className="group" key={category?._id}>
-                            <LinkButton
-                              href={`/products?filter=${category?.name}`}
-                            >
-                              <div className="overflow-hidden w-full h-full mx-auto">
+                            <LinkButton href={`/products`}>
+                              <div
+                                className="overflow-hidden w-full h-full mx-auto"
+                                onClick={() => itemClickHandler(category)}
+                              >
                                 <Image
                                   src={
                                     category?.attachment ??
@@ -93,8 +108,11 @@ const FifthSectionCategories = () => {
                           </div>
                         ))}
                       </div>
-                      <Link href={`/products?filter=${globalItem?.name}`}>
-                        <span className="lg:text-start text-blue-500 font-medium text-xs">
+                      <Link href={`/products`}>
+                        <span
+                          className="lg:text-start text-blue-500 font-medium text-xs"
+                          onClick={() => itemClickHandler(globalItem)}
+                        >
                           Explore all products in {globalItem?.name}
                         </span>
                       </Link>

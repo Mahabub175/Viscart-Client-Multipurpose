@@ -11,13 +11,27 @@ import { Drawer, Button, Menu } from "antd";
 import Link from "next/link";
 import Image from "next/image";
 import { GiCancel } from "react-icons/gi";
+import { useDispatch } from "react-redux";
+import { resetFilter, setFilter } from "@/redux/services/device/deviceSlice";
 
 const CategoryNavigation = ({ globalData }) => {
+  const dispatch = useDispatch();
+
   const { data: categories } = useGetAllCategoriesQuery();
   const [drawerStack, setDrawerStack] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
   const [currentTitle, setCurrentTitle] = useState("");
   const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const itemClickHandler = (item) => {
+    if (item?.name) {
+      dispatch(setFilter(item?.name));
+      setDrawerVisible(false);
+    }
+    if (item === "All") {
+      dispatch(resetFilter());
+    }
+  };
 
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -63,25 +77,33 @@ const CategoryNavigation = ({ globalData }) => {
         <Menu.Item key={item?._id}>
           <div className="flex items-center relative">
             {level === "parent" && !hasCategories ? (
-              <Link href={`/products?filter=${item?.name}`}>{item?.name}</Link>
+              <p onClick={() => itemClickHandler(item)}>
+                <Link href={`/products`}>{item?.name}</Link>
+              </p>
             ) : level === "parent" ? (
-              <div
-                onClick={() => navigateTo(item.categories, item)}
-                className="cursor-pointer flex items-center"
-              >
-                {item?.name}
-                <RightOutlined className="ml-2 absolute right-0" />
+              <div className="cursor-pointer flex items-center">
+                <p onClick={() => itemClickHandler(item)}>
+                  <Link href={`/products`}>{item?.name}</Link>
+                </p>
+                <RightOutlined
+                  className="ml-2 absolute right-0"
+                  onClick={() => navigateTo(item.categories, item)}
+                />
               </div>
             ) : hasSubcategories ? (
-              <div
-                onClick={() => navigateTo(item.subcategories, item)}
-                className="cursor-pointer flex items-center"
-              >
-                {item?.name}
-                <RightOutlined className="ml-2 absolute right-0" />
+              <div className="cursor-pointer flex items-center">
+                <p onClick={() => itemClickHandler(item)}>
+                  <Link href={`/products`}>{item?.name}</Link>
+                </p>
+                <RightOutlined
+                  className="ml-2 absolute right-0"
+                  onClick={() => navigateTo(item.subcategories, item)}
+                />
               </div>
             ) : (
-              <Link href={`/products?filter=${item?.name}`}>{item?.name}</Link>
+              <p onClick={() => itemClickHandler(item)}>
+                <Link href={`/products`}>{item?.name}</Link>
+              </p>
             )}
           </div>
         </Menu.Item>
@@ -100,8 +122,12 @@ const CategoryNavigation = ({ globalData }) => {
           All
         </div>
         <div className="flex gap-5 flex-wrap py-3 text-white">
-          <Link href={"/offers"}>Offers</Link>
-          <Link href={"/products"}>All Products</Link>
+          <p onClick={() => itemClickHandler("All")}>
+            <Link href={"/offers"}>Offers</Link>
+          </p>{" "}
+          <p onClick={() => itemClickHandler("All")}>
+            <Link href={"/products"}>All Products</Link>
+          </p>
         </div>
       </div>
 
